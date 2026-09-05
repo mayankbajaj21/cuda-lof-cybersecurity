@@ -15,18 +15,25 @@ from typing import Tuple, Dict, Any, Optional
 def get_project_root() -> str:
     """Return absolute path to repository root."""
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.abspath(os.path.join(current_dir, "..", ".."))
+    # src/python/data -> src/python -> src -> root
+    return os.path.abspath(os.path.join(current_dir, "..", "..", ".."))
 
 
 def load_metadata(processed_dir: Optional[str] = None) -> Dict[str, Any]:
     """Load dataset metadata JSON manifest."""
     if processed_dir is None:
         processed_dir = os.path.join(get_project_root(), "data", "processed")
-    metadata_path = os.path.join(processed_dir, "dataset_metadata.json")
-    if not os.path.exists(metadata_path):
-        raise FileNotFoundError(f"Metadata file not found at '{metadata_path}'. Run preprocessing/prepare_dataset.py first.")
-    with open(metadata_path, "r") as f:
-        return json.load(f)
+    
+    candidates = [
+        os.path.join(processed_dir, "dataset_metadata.json"),
+        os.path.join(processed_dir, "full", "dataset_metadata.json")
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            with open(path, "r") as f:
+                return json.load(f)
+
+    raise FileNotFoundError(f"Metadata file not found in '{processed_dir}'. Run preprocessing/prepare_dataset.py first.")
 
 
 def load_full_dataset(
@@ -43,12 +50,17 @@ def load_full_dataset(
     """
     if processed_dir is None:
         processed_dir = os.path.join(get_project_root(), "data", "processed")
-    data_path = os.path.join(processed_dir, "cicids2017_clean_full.npz")
-    if not os.path.exists(data_path):
-        raise FileNotFoundError(f"Processed dataset not found at '{data_path}'. Run preprocessing/prepare_dataset.py first.")
     
-    data = np.load(data_path, allow_pickle=True)
-    return data["X"], data["y_binary"], data["y_multiclass"], data["y_raw"]
+    candidates = [
+        os.path.join(processed_dir, "full", "cicids2017_clean_full.npz"),
+        os.path.join(processed_dir, "cicids2017_clean_full.npz")
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            data = np.load(path, allow_pickle=True)
+            return data["X"], data["y_binary"], data["y_multiclass"], data["y_raw"]
+
+    raise FileNotFoundError(f"Processed dataset not found in '{processed_dir}'. Run preprocessing/prepare_dataset.py first.")
 
 
 def load_subset(
@@ -72,16 +84,26 @@ def load_subset(
     if processed_dir is None:
         processed_dir = os.path.join(get_project_root(), "data", "processed")
     
-    filename = subset_name_or_size
-    if not filename.endswith(".npz"):
-        if not filename.startswith("subset_"):
-            filename = f"subset_{filename}.npz"
-        else:
-            filename = f"{filename}.npz"
-            
-    subset_path = os.path.join(processed_dir, "subsets", filename)
-    if not os.path.exists(subset_path):
-        raise FileNotFoundError(f"Subset file not found at '{subset_path}'")
-    
-    data = np.load(subset_path, allow_pickle=True)
-    return data["X"], data["y_binary"], data["y_multiclass"], data["y_raw"], data["indices"]
+    clean_name = subset_name_or_size.lower().strip()
+    if clean_name.startswith("subset_"):
+        clean_name = clean_name.replace("subset_", "")
+    if clean_name.endswith(".npz"):
+        clean_name = clean_name.replace(".npz", "")
+        
+    filename = f"subset_{clean_name}.npz"
+    folder_name = clean_name
+
+    candidates = [
+        os.path.join(processed_dir, "subsets", folder_name, filename),
+        os.path.join(processed_dir, "subsets", filename),
+        os.path.join(processed_dir, filename)
+    ]
+
+    for path in candidates:
+        if os.path.exists(path):
+            data = np.load(path, allow_pickle=True)
+            return data["X"], data["y_binary"], data["y_multiclass"], data["y_raw"], data["indices"]
+
+    raise FileNotFoundError(
+        f"Subset '{subset_name_or_size}' not found in '{os.path.join(processed_dir, 'subsets')}'. Checked: {candidates}"
+    )

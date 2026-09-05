@@ -16,9 +16,12 @@ import pytest
 import numpy as np
 import sys
 
-# Ensure src/python is in sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "python")))
-from dataset import load_metadata, load_full_dataset, load_subset, get_project_root
+# Ensure project root and src/python are in sys.path
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from src.python.data.dataset import load_metadata, load_full_dataset, load_subset, get_project_root
 
 
 @pytest.fixture(scope="module")

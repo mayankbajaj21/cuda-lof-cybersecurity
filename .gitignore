@@ -70,10 +70,13 @@ desktop.ini
 
 # Data directories (ignore raw & processed data files, preserve folder structure)
 data/raw/*
+!data/raw/**/.gitkeep
 !data/raw/.gitkeep
 data/processed/*
+!data/processed/**/.gitkeep
 !data/processed/.gitkeep
 
 # Experiment & benchmark output runs (preserve folder structure)
 results/*
+!results/**/.gitkeep
 !results/.gitkeep

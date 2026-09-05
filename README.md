@@ -54,32 +54,108 @@ The primary research contribution centers on parallelizing and optimizing the co
 ```text
 cuda-lof-cybersecurity/
 │
-├── preprocessing/      # Dataset acquisition, inspection, cleaning, and preparation pipeline
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
 ├── data/
-│   ├── raw/            # Original raw CICIDS2017 CSV captures (git-ignored)
-│   └── processed/      # Cleaned and scaled .npz feature matrices & subsets (git-ignored)
+│   ├── raw/
+│   └── processed/
+│       ├── full/
+│       └── subsets/
+│           ├── 10k/
+│           ├── 25k/
+│           ├── 100k/
+│           ├── 250k/
+│           ├── 500k/
+│           └── 1m/
+│
+├── preprocessing/
+│   ├── README.md
+│   ├── inspect_dataset.py
+│   ├── prepare_dataset.py
+│   └── download_dataset.py
+│
 ├── src/
-│   ├── python/         # Python dataset loaders and CPU implementations
-│   └── cuda/           # CUDA C++ kernels and GPU implementations
-├── tests/              # Automated test suites
-├── experiments/        # Experiment configurations and run scripts
-├── benchmarks/         # Benchmark suites and performance evaluation tables
-├── results/            # Output artifacts partitioned by milestone
+│   ├── python/
+│   │   ├── cpu/
+│   │   │   └── cpu_lof.py
+│   │   ├── data/
+│   │   │   └── dataset.py
+│   │   └── visualization/
+│   │       ├── m1_visualizations.py
+│   │       └── m2_visualizations.py
+│   │
+│   └── cuda/
+│       ├── common/
+│       ├── kernels/
+│       └── lof/
+│
+├── tests/
+│   ├── test_dataset.py
+│   ├── test_cpu_lof.py
+│   └── cuda/
+│
+├── experiments/
 │   ├── m2_cpu_baseline/
 │   ├── m3_cuda_baseline/
 │   ├── m4_profiling/
 │   ├── m5_cuda_optimized/
 │   └── m6_final_benchmarks/
-├── docs/               # Milestone technical documentation & reports
-└── scripts/            # Operational utility scripts
+│
+├── results/
+│   ├── m1_dataset_preparation/
+│   │   ├── tables/
+│   │   └── charts/
+│   │
+│   ├── m2_cpu_baseline/
+│   │   ├── benchmarks/
+│   │   ├── tables/
+│   │   └── charts/
+│   │
+│   ├── m3_cuda_baseline/
+│   │   ├── benchmarks/
+│   │   ├── tables/
+│   │   └── charts/
+│   │
+│   ├── m4_profiling/
+│   │   ├── reports/
+│   │   └── profiles/
+│   │
+│   ├── m5_cuda_optimized/
+│   │   ├── benchmarks/
+│   │   ├── tables/
+│   │   └── charts/
+│   │
+│   └── m6_final_benchmarks/
+│       ├── benchmarks/
+│       ├── tables/
+│       └── charts/
+│
+├── docs/
+│   ├── PROJECT_PLAN.md
+│   ├── M1_DATASET_PREPARATION.md
+│   ├── M2_CPU_BASELINE.md
+│   ├── M3_CUDA_BASELINE.md
+│   ├── M4_PROFILING.md
+│   ├── M5_CUDA_OPTIMIZATION.md
+│   ├── M6_FINAL_BENCHMARKS.md
+│   └── architecture/
+│
+└── scripts/
+    ├── run_cpu_baseline.py
+    ├── run_cuda_baseline.py
+    └── run_benchmarks.py
 ```
 
 ---
 
 ## Current Status
-- **Current Milestone**: `M1 — Dataset Preparation`
-- Dedicated preprocessing pipeline created in `preprocessing/` for automated inspection, cleaning, feature selection, scaling, and subset creation.
-- CICIDS2017 dataset ingested (2,830,743 raw rows), cleansed of invalid/infinite records and duplicates down to 2,520,798 valid records.
-- 68 numerical features selected and standardized (StandardScaler, float32); ground-truth labels decoupled and preserved.
-- Controlled reproducible experimental subsets (10K, 25K, 100K, 250K, 500K, 1M, and Full) generated and verified.
-- *Note: CPU baseline LOF (M2), CUDA kernels (M3), profiling (M4), and optimization benchmarks (M5-M6) have not yet been implemented.*
+- **Current Milestone**: `M2 — Naive CPU LOF Baseline (Completed & Reorganized for M3)`
+- First-principles CPU reference implementation of Local Outlier Factor (LOF) established in `src/python/cpu/cpu_lof.py` and accessible via runner `scripts/run_cpu_baseline.py`.
+- Step-by-step algorithm verified (pairwise Euclidean distances, $k$-NN sorting, reachability distance, LRD, LOF scores, anomaly predictions).
+- Correctness and numerical equivalence verified against `scikit-learn` reference implementation ($r > 0.9999$).
+- Baseline execution timings on CICIDS2017 subsets (10K: ~3.08s total, 25K: ~22.17s total) benchmarked and preserved in `results/m2_cpu_baseline/benchmarks/`.
+- M1 and M2 visualization generators located in `src/python/visualization/` producing research tables and charts in `results/m1_dataset_preparation/` and `results/m2_cpu_baseline/`.
+- Key bottleneck confirmed: Pairwise distance calculation + $k$-NN sorting consume **>99.8%** of total CPU runtime, motivating GPU acceleration.
+- *Note: CUDA kernels (M3), profiling (M4), and optimization benchmarks (M5-M6) are structural placeholders and will be implemented in future milestones.*

@@ -73,15 +73,16 @@ All processed artifacts are written to `data/processed/`:
 
 ```
 data/processed/
-├── cicids2017_clean_full.npz    # Full scaled dataset matrix (X: [2520798, 68], y_bin, y_multi, y_raw)
 ├── dataset_metadata.json        # Manifest containing feature lists, scaler parameters, class counts
+├── full/
+│   └── cicids2017_clean_full.npz # Full scaled dataset matrix (X: [2520798, 68], y_bin, y_multi, y_raw)
 └── subsets/
-    ├── subset_10k.npz
-    ├── subset_25k.npz
-    ├── subset_100k.npz
-    ├── subset_250k.npz
-    ├── subset_500k.npz
-    └── subset_1m.npz
+    ├── 10k/subset_10k.npz
+    ├── 25k/subset_25k.npz
+    ├── 100k/subset_100k.npz
+    ├── 250k/subset_250k.npz
+    ├── 500k/subset_500k.npz
+    └── 1m/subset_1m.npz
 ```
 
 ---
