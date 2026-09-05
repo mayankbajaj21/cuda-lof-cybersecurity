@@ -1,0 +1,13 @@
+# Core numerical & tabular data processing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Baseline machine learning & evaluation
+scikit-learn>=1.2.0
+
+# Testing & verification
+pytest>=7.3.0
+
+# Visualization & plotting
+matplotlib>=3.7.0
