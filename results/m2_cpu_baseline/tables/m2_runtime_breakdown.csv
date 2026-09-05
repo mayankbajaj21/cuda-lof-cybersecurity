@@ -1,0 +1,7 @@
+Stage,10K Time (s),10K %,25K Time (s),25K %
+Pairwise Distance Matrix,1.39061,45.39%,10.97823,49.59%
+k-NN Search & Sort,1.66738,54.42%,11.12575,50.26%
+Reachability Distance,0.00417,0.14%,0.01262,0.06%
+LRD Computation,0.00028,0.01%,0.01647,0.07%
+LOF Scoring,0.00134,0.04%,0.00304,0.01%
+Total LOF Compute,3.06379,100.00%,22.13613,100.00%

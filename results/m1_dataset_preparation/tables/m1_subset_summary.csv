@@ -1,0 +1,8 @@
+Subset,Samples,File,File Size (MB),Benign Count,Anomaly Count,Anomaly %
+10K,10000,subset_10k.npz,0.93,8308,1692,16.92%
+25K,25000,subset_25k.npz,2.28,20776,4224,16.90%
+100K,100000,subset_100k.npz,8.94,83111,16889,16.89%
+250K,250000,subset_250k.npz,21.97,207777,42223,16.89%
+500K,500000,subset_500k.npz,43.19,415555,84445,16.89%
+1M,1000000,subset_1m.npz,84.6,831110,168890,16.89%
+Full,2520798,cicids2017_clean_full.npz,173.19,2095057,425741,16.89%

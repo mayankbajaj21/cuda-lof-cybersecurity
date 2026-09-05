@@ -1,0 +1,21 @@
+Metric,Result
+Raw CSV Files,8
+Raw Samples,"2,830,743"
+Raw Features,79
+Numerical Features (Raw),78
+Non-Numerical Features (Raw),1 (Label)
+NaN Rows Removed,"1,358"
+Inf Rows Removed,"2,867"
+Total Invalid Rows Removed,"2,867"
+Duplicate Rows Removed,"307,078"
+Cleaned Samples,"2,520,798"
+Retention Rate,89.05%
+Final Numerical Features,68
+Excluded Features Total,11
+Removed Zero-Variance Features,8
+Removed Identifiers / Redundant,"3 (Label, Destination Port, Fwd Header Length.1)"
+Final Benign Samples,"2,095,057 (83.1109%)"
+Final Anomaly Samples,"425,741 (16.89%)"
+Scaling Method,StandardScaler (z-score normalization)
+Data Type,float32
+Random Seed,42

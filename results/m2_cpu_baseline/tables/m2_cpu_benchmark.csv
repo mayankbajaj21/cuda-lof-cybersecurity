@@ -1,0 +1,19 @@
+Metric,10K,25K
+CPU Model,13th Gen Intel(R) Core(TM) i5-13450HX,13th Gen Intel(R) Core(TM) i5-13450HX
+Physical CPU Cores,10,10
+Logical Processors,16,16
+Host RAM (GB),15.71,15.71
+Operating System,Windows 11,Windows 11
+Python Version,3.13.11,3.13.11
+Samples (N),"10,000","25,000"
+Features (D),68,68
+k (Nearest Neighbors),20,20
+Contamination,0.1,0.1
+Data Loading Time (s),0.01756,0.03336
+Pairwise Distance Matrix (s),1.39061,10.97823
+k-NN Search & Sort (s),1.66738,11.12575
+Reachability Distance (s),0.00417,0.01262
+LRD Computation (s),0.00028,0.01647
+LOF Scoring (s),0.00134,0.00304
+Total LOF Compute Time (s),3.06379,22.13613
+Total End-to-End Time (s),3.08135,22.16949

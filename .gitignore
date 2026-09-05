@@ -76,7 +76,37 @@ data/processed/*
 !data/processed/**/.gitkeep
 !data/processed/.gitkeep
 
-# Experiment & benchmark output runs (preserve folder structure)
+# Experiment & benchmark output runs (preserve folder structure, track completed M1 & M2 artifacts)
 results/*
+!results/**/
 !results/**/.gitkeep
 !results/.gitkeep
+
+# Allow completed M1 dataset preparation results
+!results/m1_inspection_report.json
+!results/m1_dataset_preparation/**
+
+# Allow completed M2 CPU baseline results
+!results/m2_cpu_baseline/**
+
+# Future milestone result directories (protect future outputs from accidental commits)
+results/m3_cuda_baseline/**
+!results/m3_cuda_baseline/**/
+!results/m3_cuda_baseline/**/.gitkeep
+!results/m3_cuda_baseline/.gitkeep
+
+results/m4_profiling/**
+!results/m4_profiling/**/
+!results/m4_profiling/**/.gitkeep
+!results/m4_profiling/.gitkeep
+
+results/m5_cuda_optimized/**
+!results/m5_cuda_optimized/**/
+!results/m5_cuda_optimized/**/.gitkeep
+!results/m5_cuda_optimized/.gitkeep
+
+results/m6_final_benchmarks/**
+!results/m6_final_benchmarks/**/
+!results/m6_final_benchmarks/**/.gitkeep
+!results/m6_final_benchmarks/.gitkeep
+

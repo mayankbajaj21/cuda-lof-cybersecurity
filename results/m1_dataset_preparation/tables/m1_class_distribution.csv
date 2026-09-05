@@ -1,0 +1,16 @@
+Class ID,Class Name,Type,Samples,Percentage
+0,BENIGN,Normal (Benign),2095057,83.1109%
+4,DoS Hulk,Anomaly (Attack),172846,6.8568%
+2,DDoS,Anomaly (Attack),128014,5.0783%
+10,PortScan,Anomaly (Attack),90694,3.5978%
+3,DoS GoldenEye,Anomaly (Attack),10286,0.4080%
+7,FTP-Patator,Anomaly (Attack),5931,0.2353%
+6,DoS slowloris,Anomaly (Attack),5385,0.2136%
+5,DoS Slowhttptest,Anomaly (Attack),5228,0.2074%
+11,SSH-Patator,Anomaly (Attack),3219,0.1277%
+1,Bot,Anomaly (Attack),1948,0.0773%
+12,Web Attack - Brute Force,Anomaly (Attack),1470,0.0583%
+14,Web Attack - XSS,Anomaly (Attack),652,0.0259%
+9,Infiltration,Anomaly (Attack),36,0.0014%
+13,Web Attack - Sql Injection,Anomaly (Attack),21,0.0008%
+8,Heartbleed,Anomaly (Attack),11,0.0004%

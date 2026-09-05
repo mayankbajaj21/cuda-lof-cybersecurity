@@ -1,0 +1,14 @@
+Metric,10K,25K
+Minimum LOF Score,0.91441,0.45000
+Maximum LOF Score,1061.43396,2966723072.00000
+Mean LOF Score,1.71634,1209706.75000
+Standard Deviation,11.32839,49812688.00000
+Median (p50),1.05598,1.05294
+25th Percentile (p25),0.99931,0.99933
+75th Percentile (p75),1.28472,1.26669
+90th Percentile (p90),1.90915,1.94397
+95th Percentile (p95),3.19238,3.58155
+99th Percentile (p99),9.90076,23.26931
+Decision Threshold (tau),1.90915,1.94397
+Predicted Inliers,"9,000","22,500"
+Predicted Anomalies,"1,000","2,500"

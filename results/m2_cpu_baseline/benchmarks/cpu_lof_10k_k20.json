@@ -1,0 +1,65 @@
+{
+  "n_samples": 10000,
+  "n_features": 68,
+  "k": 20,
+  "contamination": 0.1,
+  "threshold": 1.90915,
+  "score_statistics": {
+    "min": 0.91441,
+    "max": 1061.43396,
+    "mean": 1.71634,
+    "std": 11.32839,
+    "median": 1.05598,
+    "p25": 0.99931,
+    "p75": 1.28472,
+    "p90": 1.90915,
+    "p95": 3.19238,
+    "p99": 9.90076
+  },
+  "predicted_anomalies": 1000,
+  "predicted_inliers": 9000,
+  "timings": {
+    "distance_matrix_seconds": 1.39061,
+    "knn_search_seconds": 1.66738,
+    "reachability_distance_seconds": 0.00417,
+    "lrd_computation_seconds": 0.00028,
+    "lof_scoring_seconds": 0.00134,
+    "total_lof_compute_seconds": 3.06379,
+    "data_loading_seconds": 0.01756,
+    "total_execution_seconds": 3.08135
+  },
+  "subset_name": "10k",
+  "ground_truth": {
+    "benign_count": 8308,
+    "anomaly_count": 1692,
+    "anomaly_ratio": 0.1692
+  },
+  "environment": {
+    "os": {
+      "system": "Windows",
+      "release": "11",
+      "version": "10.0.26200",
+      "architecture": "AMD64"
+    },
+    "python": {
+      "version": "3.13.11",
+      "compiler": "MSC v.1944 64 bit (AMD64)",
+      "implementation": "CPython"
+    },
+    "libraries": {
+      "numpy": "2.4.4",
+      "scipy": "1.17.1",
+      "pandas": "3.0.2",
+      "scikit_learn": "1.8.0"
+    },
+    "cpu": {
+      "model": "13th Gen Intel(R) Core(TM) i5-13450HX",
+      "physical_cores": 10,
+      "logical_processors": 16
+    },
+    "memory": {
+      "total_ram_bytes": 16873545728,
+      "total_ram_gb": 15.71
+    }
+  }
+}
