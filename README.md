@@ -49,7 +49,37 @@ The primary research contribution centers on parallelizing and optimizing the co
 
 ---
 
+## Repository Structure
+
+```text
+cuda-lof-cybersecurity/
+│
+├── preprocessing/      # Dataset acquisition, inspection, cleaning, and preparation pipeline
+├── data/
+│   ├── raw/            # Original raw CICIDS2017 CSV captures (git-ignored)
+│   └── processed/      # Cleaned and scaled .npz feature matrices & subsets (git-ignored)
+├── src/
+│   ├── python/         # Python dataset loaders and CPU implementations
+│   └── cuda/           # CUDA C++ kernels and GPU implementations
+├── tests/              # Automated test suites
+├── experiments/        # Experiment configurations and run scripts
+├── benchmarks/         # Benchmark suites and performance evaluation tables
+├── results/            # Output artifacts partitioned by milestone
+│   ├── m2_cpu_baseline/
+│   ├── m3_cuda_baseline/
+│   ├── m4_profiling/
+│   ├── m5_cuda_optimized/
+│   └── m6_final_benchmarks/
+├── docs/               # Milestone technical documentation & reports
+└── scripts/            # Operational utility scripts
+```
+
+---
+
 ## Current Status
-- **Current Milestone**: `M0 — Repository & Environment Setup`
-- Repository structure, configuration files, and development roadmaps are initialized.
-- *Note: CUDA kernels, CPU baseline implementations, and performance benchmarks have not yet been implemented or evaluated.*
+- **Current Milestone**: `M1 — Dataset Preparation`
+- Dedicated preprocessing pipeline created in `preprocessing/` for automated inspection, cleaning, feature selection, scaling, and subset creation.
+- CICIDS2017 dataset ingested (2,830,743 raw rows), cleansed of invalid/infinite records and duplicates down to 2,520,798 valid records.
+- 68 numerical features selected and standardized (StandardScaler, float32); ground-truth labels decoupled and preserved.
+- Controlled reproducible experimental subsets (10K, 25K, 100K, 250K, 500K, 1M, and Full) generated and verified.
+- *Note: CPU baseline LOF (M2), CUDA kernels (M3), profiling (M4), and optimization benchmarks (M5-M6) have not yet been implemented.*
