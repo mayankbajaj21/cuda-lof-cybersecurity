@@ -11,3 +11,8 @@ pytest>=7.3.0
 
 # Visualization & plotting
 matplotlib>=3.7.0
+
+# Hardware/environment detection & dashboard (M4+)
+psutil>=5.9.0
+streamlit>=1.30.0
+plotly>=5.18.0

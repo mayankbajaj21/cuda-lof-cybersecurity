@@ -19,7 +19,8 @@ REM    scripts\build_smoke_test.bat run      (build and run)
 REM ============================================================
 
 echo ============================================================
-echo  Building CUDA Smoke Test (sm_86 / RTX 3050)
+if "%ARCH%"=="" set "ARCH=sm_86"
+echo  Building CUDA Smoke Test (%ARCH%)
 echo ============================================================
 
 REM Navigate to project root
@@ -30,10 +31,10 @@ if not exist "bin" mkdir bin
 
 REM Compile with nvcc targeting sm_86
 echo.
-echo [BUILD] nvcc -arch=sm_86 -O2 -o bin\smoke_test.exe src\cuda\common\smoke_test.cu
+echo [BUILD] nvcc -arch=%ARCH% -O2 -o bin\smoke_test.exe src\cuda\common\smoke_test.cu
 echo.
 
-nvcc -arch=sm_86 -O2 -o bin\smoke_test.exe src\cuda\common\smoke_test.cu
+nvcc -arch=%ARCH% -O2 -o bin\smoke_test.exe src\cuda\common\smoke_test.cu
 
 if %ERRORLEVEL% neq 0 (
     echo.

@@ -84,8 +84,11 @@ inline void print_device_info(int device_id = 0) {
     printf("  Max Grid Dimensions  : [%d, %d, %d]\n",
            prop.maxGridSize[0], prop.maxGridSize[1], prop.maxGridSize[2]);
     printf("  Multiprocessors (SMs): %d\n", prop.multiProcessorCount);
-    printf("  Clock Rate           : %.2f GHz\n", prop.clockRate / 1.0e6);
-    printf("  Memory Clock Rate    : %.2f GHz\n", prop.memoryClockRate / 1.0e6);
+    int clock_khz = 0, mem_clock_khz = 0;
+    cudaDeviceGetAttribute(&clock_khz, cudaDevAttrClockRate, device_id);
+    cudaDeviceGetAttribute(&mem_clock_khz, cudaDevAttrMemoryClockRate, device_id);
+    printf("  Clock Rate           : %.2f GHz\n", clock_khz / 1.0e6);
+    printf("  Memory Clock Rate    : %.2f GHz\n", mem_clock_khz / 1.0e6);
     printf("  Memory Bus Width     : %d-bit\n", prop.memoryBusWidth);
     printf("  L2 Cache Size        : %d bytes\n", prop.l2CacheSize);
     printf("  CUDA Runtime Version : %d.%d\n",

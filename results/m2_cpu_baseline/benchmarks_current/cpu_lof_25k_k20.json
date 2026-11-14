@@ -1,0 +1,65 @@
+{
+  "n_samples": 25000,
+  "n_features": 68,
+  "k": 20,
+  "contamination": 0.1,
+  "threshold": 1.10592,
+  "score_statistics": {
+    "min": 0.97501,
+    "max": 1.24798,
+    "mean": 1.04972,
+    "std": 0.04067,
+    "median": 1.04298,
+    "p25": 1.01833,
+    "p75": 1.07425,
+    "p90": 1.10592,
+    "p95": 1.12727,
+    "p99": 1.16499
+  },
+  "predicted_anomalies": 2500,
+  "predicted_inliers": 22500,
+  "timings": {
+    "distance_matrix_seconds": 20.99113,
+    "knn_search_seconds": 15.09243,
+    "reachability_distance_seconds": 0.01645,
+    "lrd_computation_seconds": 0.00266,
+    "lof_scoring_seconds": 0.00289,
+    "total_lof_compute_seconds": 36.10561,
+    "data_loading_seconds": 0.03203,
+    "total_execution_seconds": 36.13764
+  },
+  "subset_name": "25k",
+  "environment": {
+    "os": {
+      "system": "Windows",
+      "release": "11",
+      "version": "10.0.26300",
+      "architecture": "AMD64"
+    },
+    "python": {
+      "version": "3.13.3",
+      "compiler": "MSC v.1943 64 bit (AMD64)",
+      "implementation": "CPython"
+    },
+    "libraries": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "pandas": "2.3.3",
+      "scikit_learn": "1.6.1"
+    },
+    "cpu": {
+      "model": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+      "physical_cores": 16,
+      "logical_processors": 16
+    },
+    "memory": {
+      "total_ram_bytes": 16438312960,
+      "total_ram_gb": 15.31
+    }
+  },
+  "ground_truth": {
+    "benign_count": 20693,
+    "anomaly_count": 4307,
+    "anomaly_ratio": 0.1723
+  }
+}

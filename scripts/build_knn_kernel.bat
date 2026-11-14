@@ -18,7 +18,8 @@ REM    scripts\build_knn_kernel.bat run      (build and run C++ verification)
 REM ============================================================
 
 echo ============================================================
-echo  Building CUDA k-NN Kernel (sm_86 / RTX 3050)
+if "%ARCH%"=="" set "ARCH=sm_86"
+echo  Building CUDA k-NN Kernel (%ARCH%)
 echo ============================================================
 
 REM Navigate to project root
@@ -29,9 +30,9 @@ if not exist "bin" mkdir bin
 
 REM Compile DLL
 echo.
-echo [BUILD] nvcc -arch=sm_86 -O2 --shared -o bin\knn_kernel.dll src\cuda\kernels\knn_kernel.cu
+echo [BUILD] nvcc -arch=%ARCH% -O2 --shared -o bin\knn_kernel.dll src\cuda\kernels\knn_kernel.cu
 echo.
-nvcc -arch=sm_86 -O2 --shared -o bin\knn_kernel.dll src\cuda\kernels\knn_kernel.cu
+nvcc -arch=%ARCH% -O2 --shared -o bin\knn_kernel.dll src\cuda\kernels\knn_kernel.cu
 if %ERRORLEVEL% neq 0 (
     echo [FAIL] Compilation of knn_kernel.dll failed with error code %ERRORLEVEL%
     exit /b %ERRORLEVEL%
@@ -40,9 +41,9 @@ echo [PASS] Compiled bin\knn_kernel.dll
 
 REM Compile Standalone Test Executable
 echo.
-echo [BUILD] nvcc -arch=sm_86 -O2 -o bin\test_knn.exe src\cuda\kernels\test_knn.cu src\cuda\kernels\knn_kernel.cu src\cuda\kernels\distance_kernel.cu
+echo [BUILD] nvcc -arch=%ARCH% -O2 -o bin\test_knn.exe src\cuda\kernels\test_knn.cu src\cuda\kernels\knn_kernel.cu src\cuda\kernels\distance_kernel.cu
 echo.
-nvcc -arch=sm_86 -O2 -o bin\test_knn.exe src\cuda\kernels\test_knn.cu src\cuda\kernels\knn_kernel.cu src\cuda\kernels\distance_kernel.cu
+nvcc -arch=%ARCH% -O2 -o bin\test_knn.exe src\cuda\kernels\test_knn.cu src\cuda\kernels\knn_kernel.cu src\cuda\kernels\distance_kernel.cu
 if %ERRORLEVEL% neq 0 (
     echo [FAIL] Compilation of test_knn.exe failed with error code %ERRORLEVEL%
     exit /b %ERRORLEVEL%

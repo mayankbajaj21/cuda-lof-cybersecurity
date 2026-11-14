@@ -5,6 +5,21 @@ This document outlines the phased milestone roadmap for implementing, profiling,
 
 ---
 
+## Milestone status
+
+All milestones below are complete with real measurements (see `README.md` §2, §11–§13 for exact numbers and hardware). M4–M6 were originally completed only as analytical projections (`src/python/benchmarking/milestones.py`) on an environment without a working CUDA toolchain; once CUDA Toolkit 13.5 + MSVC were installed on this machine, M4–M6 were redone for real on an NVIDIA RTX 4050 Laptop GPU (sm_89). The dataset present on this machine is a synthetic CICIDS2017-shaped placeholder, not downloaded real data — see `README.md` §3.
+
+| Milestone | Status |
+| :--- | :--- |
+| M0 | Done |
+| M1 | Done (synthetic placeholder dataset on this machine) |
+| M2 | Done — real |
+| M3 | Done — real |
+| M4 | Done — real CUDA-event profiling; Nsight tools not installed |
+| M5 | Done — real optimized kernels, modest measured speedup |
+| M6 | Done at 10K–25K; 100K–1M correctly marked infeasible (VRAM/RAM wall) |
+| M7 | Done — README + Streamlit dashboard (`app.py`) |
+
 ## Milestones
 
 ### M0 — Repository & Environment Setup

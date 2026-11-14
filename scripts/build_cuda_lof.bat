@@ -5,8 +5,9 @@ REM
 REM  Project: CUDA LOF Cybersecurity
 REM  Milestone: M3 - CUDA LOF Baseline (Step 4)
 REM
-REM  Target GPU: NVIDIA GeForce RTX 3050 (sm_86, Compute Capability 8.6)
-REM  Compiler:   CUDA Toolkit 12.8 (nvcc) + MSVC v143 (VS 2022 v14.38-17.8)
+REM  Target GPU: set via ARCH env var (default sm_86 / RTX 3050); override
+REM              per-machine, e.g. "set ARCH=sm_89 && scripts\build_cuda_lof.bat"
+REM  Compiler:   CUDA Toolkit (nvcc) + matching MSVC host compiler
 REM
 REM  Outputs:
 REM    - bin\cuda_lof.dll     (Shared library for Python ctypes)
@@ -17,8 +18,10 @@ REM    scripts\build_cuda_lof.bat          (build only)
 REM    scripts\build_cuda_lof.bat run      (build and run C++ verification)
 REM ============================================================
 
+if "%ARCH%"=="" set "ARCH=sm_86"
+
 echo ============================================================
-echo  Building Complete CUDA LOF Baseline (sm_86 / RTX 3050)
+echo  Building Complete CUDA LOF Baseline (%ARCH%)
 echo ============================================================
 
 REM Navigate to project root
@@ -34,7 +37,7 @@ REM Compile DLL
 echo.
 echo [BUILD] Compiling bin\cuda_lof.dll...
 echo.
-nvcc -arch=sm_86 -O2 --shared -o bin\cuda_lof.dll %SOURCES%
+nvcc -arch=%ARCH% -O2 --shared -o bin\cuda_lof.dll %SOURCES%
 if %ERRORLEVEL% neq 0 (
     echo [FAIL] Compilation of cuda_lof.dll failed with error code %ERRORLEVEL%
     exit /b %ERRORLEVEL%
@@ -45,7 +48,7 @@ REM Compile Standalone Test Executable
 echo.
 echo [BUILD] Compiling bin\test_cuda_lof.exe...
 echo.
-nvcc -arch=sm_86 -O2 -o bin\test_cuda_lof.exe src\cuda\lof\test_cuda_lof.cu %SOURCES%
+nvcc -arch=%ARCH% -O2 -o bin\test_cuda_lof.exe src\cuda\lof\test_cuda_lof.cu %SOURCES%
 if %ERRORLEVEL% neq 0 (
     echo [FAIL] Compilation of test_cuda_lof.exe failed with error code %ERRORLEVEL%
     exit /b %ERRORLEVEL%
