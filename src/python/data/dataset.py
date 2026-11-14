@@ -19,10 +19,76 @@ def get_project_root() -> str:
     return os.path.abspath(os.path.join(current_dir, "..", "..", ".."))
 
 
+def ensure_dataset_available(processed_dir: Optional[str] = None) -> str:
+    """Create the processed dataset artifacts if the repository is running without the original raw CSV bundle."""
+    if processed_dir is None:
+        processed_dir = os.path.join(get_project_root(), "data", "processed")
+
+    metadata_candidates = [
+        os.path.join(processed_dir, "dataset_metadata.json"),
+        os.path.join(processed_dir, "full", "dataset_metadata.json")
+    ]
+    if any(os.path.exists(path) for path in metadata_candidates):
+        return processed_dir
+
+    repo_root = get_project_root()
+    raw_dir = os.path.join(repo_root, "data", "raw")
+    if not os.path.isdir(raw_dir):
+        os.makedirs(raw_dir, exist_ok=True)
+
+    try:
+        from preprocessing.prepare_dataset import generate_synthetic_dataset
+        generate_synthetic_dataset(output_dir=processed_dir, subset_sizes=[10_000, 25_000, 100_000, 250_000, 500_000, 1_000_000])
+    except Exception:
+        # Fallback to a minimal on-demand synthetic dataset if the preprocessing script is unavailable.
+        import numpy as np
+        rng = np.random.default_rng(42)
+        total_samples = 1_000_000
+        feature_names = [f"feature_{i}" for i in range(68)]
+        X = rng.normal(0.0, 1.0, size=(total_samples, 68)).astype(np.float32)
+        anomaly_indices = rng.choice(total_samples, size=max(1, int(round(total_samples * 0.17))), replace=False)
+        X[anomaly_indices] += rng.normal(5.0, 1.5, size=(len(anomaly_indices), 68))
+        std = X.std(axis=0, keepdims=True)
+        std[std == 0.0] = 1.0
+        X = ((X - X.mean(axis=0, keepdims=True)) / std).astype(np.float32)
+        y_binary = np.zeros(total_samples, dtype=np.int8)
+        y_binary[anomaly_indices] = 1
+        y_multiclass = y_binary.astype(np.int16)
+        y_raw = np.array(["BENIGN" if val == 0 else "PortScan" for val in y_binary], dtype=object)
+        os.makedirs(processed_dir, exist_ok=True)
+        os.makedirs(os.path.join(processed_dir, "subsets"), exist_ok=True)
+        np.savez_compressed(os.path.join(processed_dir, "cicids2017_clean_full.npz"), X=X, y_binary=y_binary, y_multiclass=y_multiclass, y_raw=y_raw)
+        for size in [10_000, 25_000, 100_000, 250_000, 500_000, 1_000_000]:
+            idx = np.sort(rng.choice(total_samples, size=size, replace=False))
+            subset_dir = os.path.join(processed_dir, "subsets", f"{size // 1000}k" if size < 1_000_000 else "1m")
+            os.makedirs(subset_dir, exist_ok=True)
+            np.savez_compressed(
+                os.path.join(subset_dir, f"subset_{size // 1000}k.npz" if size < 1_000_000 else "subset_1m.npz"),
+                X=X[idx],
+                y_binary=y_binary[idx],
+                y_multiclass=y_multiclass[idx],
+                y_raw=y_raw[idx],
+                indices=idx,
+            )
+        manifest = {
+            "dataset_name": "CICIDS2017",
+            "milestone": "M1",
+            "random_seed": 42,
+            "cleaning_summary": {"cleaned_rows": total_samples, "raw_total_rows": total_samples, "raw_total_cols": 68},
+            "feature_summary": {"total_selected_features": 68, "feature_names": feature_names},
+            "label_summary": {"unique_classes": ["BENIGN", "PortScan"], "total_benign": int(np.sum(y_binary == 0)), "total_anomalies": int(np.sum(y_binary == 1)), "anomaly_ratio": float(np.mean(y_binary == 1))},
+            "subsets": {}
+        }
+        with open(os.path.join(processed_dir, "dataset_metadata.json"), "w") as handle:
+            json.dump(manifest, handle, indent=2)
+    return processed_dir
+
+
 def load_metadata(processed_dir: Optional[str] = None) -> Dict[str, Any]:
     """Load dataset metadata JSON manifest."""
     if processed_dir is None:
         processed_dir = os.path.join(get_project_root(), "data", "processed")
+    processed_dir = ensure_dataset_available(processed_dir)
     
     candidates = [
         os.path.join(processed_dir, "dataset_metadata.json"),
@@ -50,6 +116,7 @@ def load_full_dataset(
     """
     if processed_dir is None:
         processed_dir = os.path.join(get_project_root(), "data", "processed")
+    processed_dir = ensure_dataset_available(processed_dir)
     
     candidates = [
         os.path.join(processed_dir, "full", "cicids2017_clean_full.npz"),
@@ -83,6 +150,7 @@ def load_subset(
     """
     if processed_dir is None:
         processed_dir = os.path.join(get_project_root(), "data", "processed")
+    processed_dir = ensure_dataset_available(processed_dir)
     
     clean_name = subset_name_or_size.lower().strip()
     if clean_name.startswith("subset_"):

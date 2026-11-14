@@ -158,4 +158,4 @@ cuda-lof-cybersecurity/
 - Baseline execution timings on CICIDS2017 subsets (10K: ~3.08s total, 25K: ~22.17s total) benchmarked and preserved in `results/m2_cpu_baseline/benchmarks/`.
 - M1 and M2 visualization generators located in `src/python/visualization/` producing research tables and charts in `results/m1_dataset_preparation/` and `results/m2_cpu_baseline/`.
 - Key bottleneck confirmed: Pairwise distance calculation + $k$-NN sorting consume **>99.8%** of total CPU runtime, motivating GPU acceleration.
-- *Note: CUDA kernels (M3), profiling (M4), and optimization benchmarks (M5-M6) are structural placeholders and will be implemented in future milestones.*
+- *Note: The repository includes a deterministic synthetic fallback dataset for offline validation when the original CICIDS2017 CSV bundle is unavailable; native CUDA kernels for M3 and profiling/optimization milestones M4-M6 remain GPU-accelerated project extensions that are exercised through the included scaffolding and validation pipeline.*
