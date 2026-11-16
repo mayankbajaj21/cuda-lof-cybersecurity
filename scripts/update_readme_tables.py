@@ -46,8 +46,9 @@ def build_tables(df):
         for _, r in sub.iterrows():
             src = SOURCE_LABELS.get(r["technique_source"], r["technique_source"])
             if r["classification"] != "MEASURED":
+                reason = str(r["unavailable_reason"]).removeprefix("Not run:").strip()
                 out.append(f"| {r['variant_name']} | {src} | {r['exact_or_approximate']} | "
-                           f"not run — {r['unavailable_reason']} | – | – | – | – |")
+                           f"not run — {reason} | – | – | – | – |")
                 continue
             mem = "–" if pd.isna(r["peak_gpu_mem_bytes_tracked"]) else f"{r['peak_gpu_mem_bytes_tracked'] / 2**20:,.0f} MiB"
             out.append(

@@ -2,6 +2,24 @@
 
 A research project that implements, validates, and benchmarks the **Local Outlier Factor (LOF)** unsupervised anomaly-detection algorithm twice — once as a transparent CPU reference in NumPy, once as a native CUDA C++ pipeline — and measures the GPU speedup on a real cybersecurity intrusion-detection dataset (**CICIDS2017**).
 
+### Results at a glance
+
+All numbers below come from one benchmark session (M8) on an NVIDIA RTX 4050 Laptop GPU (6 GB), 25,000 rows × 68 features, k = 20. Times are medians. The data is a synthetic CICIDS2017-shaped placeholder (see §3), which affects the anomaly results but not the timings.
+
+| Step | What changed | Median time | vs. CPU | vs. previous step |
+| :--- | :--- | ---: | ---: | ---: |
+| CPU (NumPy) | Reference implementation | 21,504 ms | 1× | – |
+| Naive GPU (V0) | One CUDA thread per distance | 294 ms | 73× | 73× |
+| Syllabus-optimized GPU (V1) | Coalescing, shared-memory tiling, occupancy tuning, unrolling (course Modules 2–4) | 268 ms | 80× | 1.10× |
+| + Register blocking (V2) | Each thread computes a 4×4 block of distances | 150 ms | 144× | 1.79× vs. V1 |
+| + Async copy & double buffering (V3) | Loads the next tile while computing the current one | 300 ms | 72× | **0.90× vs. V1 (slower)** |
+| + FP16 storage (V4) | 16-bit storage, 32-bit arithmetic — approximate | 149 ms | 145× | 1.80× vs. V1 |
+| **All three combined (V5)** | V2 + V3 + V4 — approximate | **88 ms** | **244×** | **3.04× vs. V1** |
+
+V2, V3 and V4 are each applied to V1 on their own, so each "vs. V1" figure is that one technique's contribution. FP16 also halves GPU memory, which lets V4/V5 run 45,000 rows where every 32-bit version runs out of VRAM. Full tables, accuracy and per-kernel detail are in [§16](#16-advanced-optimizations-beyond-the-syllabus-m8--measured-same-hardware); the dashboard's **Optimization Journey** page shows the same data interactively.
+
+![Stage ladder: CPU, naive GPU, syllabus-optimized and each outside-syllabus technique](results/m8_advanced_optimizations/charts/m8_01_stage_ladder.png)
+
 ---
 
 ## 1. Why this project exists
@@ -23,7 +41,7 @@ To be precise about the state of the repository:
 | **M1** Dataset prep | ✅ Real | Preparation pipeline is real code, cleaning/scaling/splitting into real `.npz` subsets — **but see §3 below: on this machine it ran on a synthetic placeholder, not downloaded CICIDS2017** |
 | **M2** CPU LOF baseline | ✅ Real | First-principles NumPy LOF, validated against scikit-learn, timed on real hardware |
 | **M3** CUDA LOF baseline | ✅ Real | Native CUDA C++ kernels compiled with `nvcc`, executed on a physical GPU, timed with CUDA events, cross-checked against the CPU baseline |
-| **M4** Profiling | ✅ Real (CUDA-event) / ⚠️ Nsight unavailable | Real per-kernel timing via `CudaLofTimings` on an actual CUDA build. Nsight Compute/Systems were not installed on this machine, so occupancy/register/throughput metrics are not collected — wall-clock kernel timing is |
+| **M4** Profiling | ✅ Real (CUDA-event) / ⚠️ Nsight counters blocked | Real per-kernel timing via `CudaLofTimings` on an actual CUDA build. Nsight Compute and Nsight Systems are installed, but Windows blocks access to the GPU's performance counters without admin permission (`ERR_NVGPUCTRPERM`), so hardware counters (achieved occupancy, throughput) are not collected. Registers, shared memory and theoretical occupancy per kernel are collected another way in M8 (§16) |
 | **M5** Optimization | ✅ Real | A shared-memory-tiled distance kernel and a tuned k-NN kernel were implemented, built, and measured against the naive baseline on real hardware — modest, honestly-reported speedup (see §12) |
 | **M6** Final benchmarks | ✅ Real (10K–25K) / 🚫 Infeasible (100K–1M) | Real CPU vs. naive-CUDA vs. optimized-CUDA measurements at 10K/25K. 100K+ sizes were checked against live VRAM/RAM and correctly refused, not faked — see §13 |
 | **M7** Dashboard & final docs | ✅ Done | This README plus a Streamlit dashboard (`app.py`) that reads every result below live from disk |
@@ -364,7 +382,7 @@ Methodology: GPU timings are medians of 10 runs after 3 discarded warm-ups, take
 
 | Variant | Source | Exact / approx. | Median end-to-end | × vs CPU | × vs V0 | × vs V1 | Peak GPU memory |
 | :--- | :--- | :---: | ---: | ---: | ---: | ---: | ---: |
-| CPU (NumPy) | CPU reference | exact | not run — Not run: the CPU reference materialises at least one 45000x45000 float32 matrix (7.5 GiB) plus temporaries; 8.7 GiB RAM was available. O(N^2) extrapolation from the 25k median: ~70 s per run (ESTIMATED). | – | – | – | – |
+| CPU (NumPy) | CPU reference | exact | not run — the CPU reference materialises at least one 45000x45000 float32 matrix (7.5 GiB) plus temporaries; 8.7 GiB RAM was available. O(N^2) extrapolation from the 25k median: ~70 s per run (ESTIMATED). | – | – | – | – |
 | V0 Naive | GPU baseline | exact | not run — Needs ~7.56 GiB (+300 MiB margin) but only 5.67 GiB VRAM was free at run time | – | – | – | – |
 | V1 Syllabus-optimized | Syllabus | exact | not run — Needs ~7.56 GiB (+300 MiB margin) but only 5.67 GiB VRAM was free at run time | – | – | – | – |
 | V2 Register blocking | Outside syllabus | exact | not run — Needs ~7.56 GiB (+300 MiB margin) but only 5.67 GiB VRAM was free at run time | – | – | – | – |
@@ -382,3 +400,59 @@ _Generated by `scripts/update_readme_tables.py` from `results/m8_advanced_optimi
 - **All three combined (V5) is the fastest**, roughly 3× faster than the syllabus-optimized version end-to-end, with the same accuracy as V4.
 - **Nsight Compute could not be used.** Windows blocked access to the GPU's performance counters (`ERR_NVGPUCTRPERM`) and no admin settings were changed. Registers, shared memory and local-memory use per kernel come from `cudaFuncGetAttributes`; occupancy is the theoretical value from CUDA's occupancy calculator (labelled ESTIMATED).
 - **Caveats:** only about 2.7 GiB of RAM was free during the CPU runs, so CPU times may be inflated by paging, and GPU timings at 25k vary a lot from run to run (medians are used). The k-NN kernels from M3/M5 still spill to local memory, a candidate for future work.
+
+### Where each technique acts (per-kernel, 25k, median)
+
+The three techniques target the distance kernel, which is about 80% of GPU time (§11). FP16 also speeds up the k-NN kernel, because k-NN reads the distance matrix and FP16 halves the bytes it has to read.
+
+| Variant | Distance kernel | × vs V1 | k-NN kernel | × vs V1 |
+| :--- | ---: | ---: | ---: | ---: |
+| V0 Naive | 175.96 ms | 0.88× | 43.44 ms | 0.98× |
+| V1 Syllabus-optimized | 154.17 ms | 1.00× | 42.69 ms | 1.00× |
+| V2 Register blocking | 35.83 ms | **4.30×** | 42.71 ms | 1.00× |
+| V3 Async copy + double buffering | 185.56 ms | 0.83× | 42.65 ms | 1.00× |
+| V4 FP16 storage | 88.93 ms | 1.73× | 22.32 ms | **1.91×** |
+| V5 Combined | 26.40 ms | **5.84×** | 22.36 ms | **1.91×** |
+
+At 10k the picture is the same: distance kernel 4.24× (V2), 0.83× (V3), 1.77× (V4) and 5.83× (V5) vs. V1.
+
+### Kernel resources (distance kernel)
+
+Read from the compiled kernels with `cudaFuncGetAttributes` (measured); occupancy is the theoretical value from CUDA's occupancy calculator (estimated), because Nsight's hardware counters were blocked.
+
+| Variant | Registers / thread | Shared memory / block | Theoretical occupancy |
+| :--- | ---: | ---: | ---: |
+| V0 Naive | 37 | 0 B | 100% |
+| V1 Syllabus-optimized | 40 | 2,048 B | 100% |
+| V2 Register blocking | 54 | 8,704 B | 66.7% |
+| V3 Async copy + double buffering | 42 | 4,096 B | 83.3% |
+| V4 FP16 storage | 34 | 1,024 B | 100% |
+| V5 Combined | 78 | 12,288 B | 50.0% |
+
+Register blocking is the clearest example that higher occupancy is not the goal in itself: V2 runs a third fewer warps per SM than V1 but is over 4× faster, because each thread computes 16 distances and reuses every value it loads from shared memory 4 times. V3 pays for its second shared-memory buffer with lower occupancy and gets nothing back, since the data is already in L2 cache. All k-NN kernels use 40 registers; the naive one spills 2,048 B per thread to local memory and the M5/M8 ones 256 B.
+
+### FP16 accuracy (V4 and V5 vs. exact V0)
+
+| Size | Max score error | Mean score error | Pearson r | Same neighbours (recall@k) | Same anomaly flags |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| 10k | 0.0068 | 0.00025 | 0.999886 | 99.33% | 99.90% |
+| 25k | 0.0102 | 0.00025 | 0.999885 | 99.36% | 99.90% |
+
+V4 and V5 produce identical scores to each other at every size (they share the same FP16 rounding), and no FP16 overflow occurred. At 45k there is no 32-bit GPU reference to compare against, because none fits in VRAM. V1–V3 are bit-identical to V0 at every size.
+
+### Charts
+
+| | |
+| :---: | :---: |
+| ![Per-kernel time by variant](results/m8_advanced_optimizations/charts/m8_02_kernel_breakdown.png) | ![Speedup of each technique vs. V1](results/m8_advanced_optimizations/charts/m8_03_speedup_vs_v1.png) |
+| ![Peak GPU memory by variant, including 45k](results/m8_advanced_optimizations/charts/m8_04_peak_memory.png) | ![FP16 accuracy vs. exact](results/m8_advanced_optimizations/charts/m8_05_fp16_accuracy.png) |
+
+### Reproduce
+
+```powershell
+scripts\build_cuda_lof_variants.bat              # with ARCH set for your GPU, see §8
+python scripts\run_m8_advanced_optimizations.py  # CPU + V0–V5, writes results/m8_advanced_optimizations/
+python scripts\update_readme_tables.py           # regenerates the tables above from the new CSV
+```
+
+On a different GPU the absolute times will differ; the techniques and the comparison method stay the same.
