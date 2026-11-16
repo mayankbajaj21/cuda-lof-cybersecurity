@@ -1,0 +1,58 @@
+{
+  "milestone": "M4",
+  "generated_at_utc": "2026-11-14T22:31:44.660773+00:00",
+  "status": "measured",
+  "can_run_gpu_profiling": true,
+  "run_result": {
+    "status": "measured",
+    "subsets": {
+      "10k": {
+        "n_samples": 10000,
+        "n_features": 68,
+        "k": 20,
+        "n_warmup": 2,
+        "n_repeats": 10,
+        "stage_means_ms": {
+          "h2d_transfer": 0.6833,
+          "pairwise_distance_kernel": 44.93597,
+          "knn_kernel": 9.96096,
+          "reachability_distance_kernel": 0.0487,
+          "lrd_kernel": 0.05393,
+          "lof_scoring_kernel": 0.04844,
+          "d2h_transfer": 0.10156
+        },
+        "total_kernel_ms_mean": 55.048,
+        "dominant_stage": "pairwise_distance_kernel"
+      },
+      "25k": {
+        "n_samples": 25000,
+        "n_features": 68,
+        "k": 20,
+        "n_warmup": 2,
+        "n_repeats": 10,
+        "stage_means_ms": {
+          "h2d_transfer": 1.29897,
+          "pairwise_distance_kernel": 228.22422,
+          "knn_kernel": 46.22561,
+          "reachability_distance_kernel": 0.08346,
+          "lrd_kernel": 0.01168,
+          "lof_scoring_kernel": 0.0297,
+          "d2h_transfer": 0.10835
+        },
+        "total_kernel_ms_mean": 274.57467,
+        "dominant_stage": "pairwise_distance_kernel"
+      }
+    },
+    "k": 20,
+    "n_warmup": 2,
+    "n_repeats": 10
+  },
+  "capability_report_path": "results\\m4_profiling\\profiling_capabilities.json",
+  "kernel_timing_path": "results\\m4_profiling\\kernel_timing.csv",
+  "transfer_timing_path": "results\\m4_profiling\\transfer_timing.csv",
+  "bottleneck_analysis_path": "results\\m4_profiling\\bottleneck_analysis.md",
+  "limitations": [
+    "Nsight Compute (ncu) not found \u2014 per-kernel occupancy/register/throughput metrics cannot be collected.",
+    "Nsight Systems (nsys) not found \u2014 timeline-level GPU/CPU/transfer tracing cannot be collected."
+  ]
+}

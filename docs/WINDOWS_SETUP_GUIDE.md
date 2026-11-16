@@ -165,6 +165,7 @@ scripts\build_distance_kernel.bat
 scripts\build_knn_kernel.bat
 scripts\build_cuda_lof.bat run
 scripts\build_cuda_lof_optimized.bat
+scripts\build_cuda_lof_variants.bat
 ```
 
 - `build_smoke_test.bat` — sanity-checks the toolchain (vector add). Run its
@@ -176,6 +177,12 @@ scripts\build_cuda_lof_optimized.bat
   `COMPLETE CUDA LOF PIPELINE VERIFICATION PASSED`.
 - `build_cuda_lof_optimized.bat` — builds the **optimized** (shared-memory
   tiled) CUDA LOF pipeline (`bin\cuda_lof_optimized.dll`).
+- `build_cuda_lof_variants.bat` — builds the M8 library
+  (`bin\cuda_lof_variants.dll`) containing all six GPU versions V0–V5: naive,
+  syllabus-optimized, register blocking, async double-buffered copies, FP16
+  storage, and all three combined. The async-copy code needs compute
+  capability 8.0 or newer (`sm_80`+); on older GPUs it falls back to ordinary
+  loads automatically.
 
 ### 4.3 Troubleshooting the build
 
@@ -283,6 +290,54 @@ Each writes its own CSV/JSON/Markdown reports and chart PNGs under
 minutes — the CPU LOF reference is O(N²) and the 25K-row run alone takes
 roughly 20–25 seconds per repetition, times the configured repeat count.
 
+### 8.1 Run the advanced-optimization comparison (M8)
+
+This is the run the dashboard's **Optimization Journey** page is built on. It
+measures CPU and all six GPU versions (V0–V5) in one session, so every step of
+the comparison uses the same conditions:
+
+```powershell
+$env:PATH = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.5\bin;$env:PATH"
+python scripts\run_m8_advanced_optimizations.py   # writes results\m8_advanced_optimizations\
+python scripts\update_readme_tables.py            # refreshes the README §16 table from the new CSV
+```
+
+It takes several minutes (mostly the CPU runs). Before each 45k-row attempt
+it checks free VRAM live and skips any version that won't fit, recording why.
+
+### 8.2 Getting stable benchmark numbers on a laptop
+
+Laptop timings change a lot with power and memory state. Before running any
+benchmark script:
+
+1. **Plug in the charger.** On battery the GPU and CPU clock down.
+2. **Switch to the High performance power plan:**
+   ```powershell
+   powercfg /setactive SCHEME_MIN
+   ```
+   (Or Control Panel → Power Options → High performance. Run
+   `powercfg /setactive SCHEME_BALANCED` afterwards to switch back.)
+3. **Close memory-heavy apps** (browsers, IDEs, Docker). The CPU reference
+   needs several GB of RAM at 25k rows; if free RAM is low, Windows pages to
+   disk and CPU times come out inflated. The M8 script records free RAM at the
+   start of each CPU run in `variant_benchmarks.csv`
+   (`ram_available_bytes_at_start`).
+4. Don't use the GPU for anything else (games, video) during the run.
+
+### 8.3 Enabling Nsight Compute profiling (optional, needs admin)
+
+Nsight Compute is installed with the CUDA Toolkit, but by default Windows only
+lets administrators read GPU performance counters, so profiling fails with
+`ERR_NVGPUCTRPERM`. The M8 script then records those metrics as UNAVAILABLE
+and falls back to `cudaFuncGetAttributes` / theoretical occupancy. To get real
+Nsight metrics (achieved occupancy, memory throughput):
+
+1. Right-click the desktop → **NVIDIA Control Panel** (run as an administrator).
+2. Menu **Desktop → Enable Developer Settings**.
+3. In the left pane: **Developer → Manage GPU Performance Counters**.
+4. Select **Allow access to the GPU performance counters to all users**, click **Apply**.
+5. Re-run `python scripts\run_m8_advanced_optimizations.py`.
+
 > **If these report `can_run_gpu_profiling: false` even though you built the
 > DLLs in §4**: it means the *shell these scripts were run from* doesn't have
 > `nvcc`/CUDA on its PATH (each new terminal starts without it unless you
@@ -297,8 +352,10 @@ roughly 20–25 seconds per repetition, times the configured repeat count.
 pytest -v tests\
 ```
 - Without built CUDA DLLs: CPU/dataset tests pass, CUDA tests are skipped.
-- With built CUDA DLLs (§4 done): all tests run, including kernel correctness
-  checks against the CPU reference. Expect all tests to pass.
+- With all three CUDA DLLs built (§4 done): all tests run, including kernel
+  correctness checks against the CPU reference and the V0–V5 variant tests.
+  Run from a PowerShell window where CUDA is on PATH. On the development
+  machine this was 103 CUDA/CPU tests plus the dashboard tests, all passing.
 
 ---
 
@@ -316,9 +373,10 @@ to navigate:
 | Hardware & Environment | Live detected CPU/GPU/OS + historical benchmark hardware |
 | Dataset Analytics | M1 dataset stats and charts (with synthetic-data banner if applicable) |
 | CPU vs. GPU Benchmarks | M2/M6 timing comparison, speedup charts |
+| Optimization Journey | M8: CPU → naive GPU → syllabus-optimized → each outside-syllabus technique → combined, all from one session; technique cards, per-kernel breakdown, memory, accuracy |
 | CUDA Profiling | M4 per-kernel breakdown, bottleneck highlight |
 | CUDA Optimization | M5 naive-vs-optimized kernel comparison |
-| Benchmark Lab | Run a new live experiment from the UI, with a pre-run VRAM/RAM feasibility check |
+| Benchmark Lab | Run a new live experiment from the UI (CPU, naive, syllabus-optimized, or V2–V5), with a pre-run VRAM/RAM feasibility check |
 | Memory & Scalability | M6 memory analysis, VRAM feasibility wall, live "what-if" size calculator |
 | Anomaly Detection Results | LOF score distributions, flagged anomalies |
 | Correctness & Validation | CPU vs. naive vs. optimized agreement metrics |
@@ -337,10 +395,11 @@ To stop the dashboard, press `Ctrl+C` in the terminal it's running in.
 
 - [ ] Python installed, `pip install -r requirements.txt` done
 - [ ] (GPU path) VS2022 Build Tools + CUDA Toolkit installed, `nvcc --version` works in a fresh terminal
-- [ ] (GPU path) `bin\cuda_lof.dll`, `bin\cuda_lof_optimized.dll` built via §4
+- [ ] (GPU path) `bin\cuda_lof.dll`, `bin\cuda_lof_optimized.dll`, `bin\cuda_lof_variants.dll` built via §4
 - [ ] `data\processed\subsets\` populated via §5 (real or synthetic)
 - [ ] M2 CPU baseline run (§6)
 - [ ] M3 CUDA baseline run (§7) — GPU path only
 - [ ] M4/M5/M6 scripts run (§8) — GPU path only for real GPU numbers
+- [ ] M8 comparison run (§8.1), plugged in on High performance (§8.2)
 - [ ] `pytest -v tests\` passes (§9)
 - [ ] `streamlit run app.py` opens and every page shows data (§10)

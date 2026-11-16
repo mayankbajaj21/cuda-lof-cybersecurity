@@ -1,0 +1,85 @@
+{
+  "milestone": "M5",
+  "status": "measured",
+  "generated_at_utc": "2026-11-14T22:34:26.212930+00:00",
+  "subsets": {
+    "10k": {
+      "n_samples": 10000,
+      "n_features": 68,
+      "naive_end_to_end_ms": {
+        "mean_ms": 60.94655,
+        "median_ms": 59.68221,
+        "min_ms": 56.65923,
+        "max_ms": 72.14102,
+        "std_ms": 4.42815,
+        "repetitions": 10
+      },
+      "optimized_end_to_end_ms": {
+        "mean_ms": 53.83956,
+        "median_ms": 52.45538,
+        "min_ms": 51.57098,
+        "max_ms": 62.9241,
+        "std_ms": 3.33177,
+        "repetitions": 10
+      },
+      "end_to_end_speedup": 1.132,
+      "naive_stage_means_ms": {
+        "h2d": 0.58222,
+        "distance_kernel": 32.66719,
+        "knn_kernel": 8.21012,
+        "reachability_kernel": 0.03881,
+        "lrd_kernel": 0.05957,
+        "lof_kernel": 0.04125,
+        "d2h": 0.10981
+      },
+      "optimized_stage_means_ms": {
+        "h2d": 0.59439,
+        "distance_kernel": 27.13041,
+        "knn_kernel": 7.52999,
+        "reachability_kernel": 0.02877,
+        "lrd_kernel": 0.05055,
+        "lof_kernel": 0.03861,
+        "d2h": 0.09582
+      }
+    },
+    "25k": {
+      "n_samples": 25000,
+      "n_features": 68,
+      "naive_end_to_end_ms": {
+        "mean_ms": 361.04062,
+        "median_ms": 349.37248,
+        "min_ms": 332.01962,
+        "max_ms": 489.65692,
+        "std_ms": 45.74549,
+        "repetitions": 10
+      },
+      "optimized_end_to_end_ms": {
+        "mean_ms": 353.11254,
+        "median_ms": 347.87151,
+        "min_ms": 309.19617,
+        "max_ms": 466.37469,
+        "std_ms": 46.86405,
+        "repetitions": 10
+      },
+      "end_to_end_speedup": 1.022,
+      "naive_stage_means_ms": {
+        "h2d": 1.17781,
+        "distance_kernel": 205.93982,
+        "knn_kernel": 45.70214,
+        "reachability_kernel": 0.08253,
+        "lrd_kernel": 0.02549,
+        "lof_kernel": 0.04381,
+        "d2h": 0.14834
+      },
+      "optimized_stage_means_ms": {
+        "h2d": 1.21092,
+        "distance_kernel": 209.65601,
+        "knn_kernel": 44.91418,
+        "reachability_kernel": 0.08591,
+        "lrd_kernel": 0.01894,
+        "lof_kernel": 0.07245,
+        "d2h": 0.14227
+      }
+    }
+  }
+}

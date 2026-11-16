@@ -1,0 +1,114 @@
+{
+  "generated_for": "M4 GPU Profiling and Performance Analysis",
+  "hardware_snapshot": {
+    "cpu": {
+      "model": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+      "architecture": "AMD64",
+      "physical_cores": 8,
+      "logical_cores": 16,
+      "max_frequency_mhz": 3201.0,
+      "current_frequency_mhz": 2502.0
+    },
+    "memory": {
+      "total_ram_bytes": 16438312960,
+      "total_ram_gb": 15.31,
+      "available_ram_bytes": 8306663424,
+      "available_ram_gb": 7.74,
+      "used_ram_percent": 49.5
+    },
+    "gpu": {
+      "available": true,
+      "vendor": "NVIDIA",
+      "gpu_count": 1,
+      "gpus": [
+        {
+          "name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+          "total_memory_mb": 6141.0,
+          "free_memory_mb": 5921.0,
+          "used_memory_mb": 0.0,
+          "compute_capability": "8.9",
+          "utilization_percent": 0.0,
+          "temperature_celsius": 51.0,
+          "power_draw_watts": 2.04,
+          "sm_clock_mhz": 210.0
+        }
+      ],
+      "driver_version": "581.80",
+      "cuda_runtime_version": "13.0",
+      "detection_method": "nvidia-smi",
+      "reason_unavailable": null
+    },
+    "os": {
+      "system": "Windows",
+      "release": "11",
+      "version": "10.0.26300",
+      "platform_string": "Windows-11-10.0.26300-SP0",
+      "architecture": "AMD64"
+    },
+    "python": {
+      "version": "3.13.3",
+      "implementation": "CPython",
+      "numpy_version": "2.2.6"
+    },
+    "tools": {
+      "nvcc": {
+        "available": true,
+        "version": "13.5"
+      },
+      "nsys": {
+        "available": false,
+        "version": null
+      },
+      "ncu": {
+        "available": false,
+        "version": null
+      },
+      "nvidia_smi": {
+        "available": true,
+        "version": "581.80"
+      }
+    },
+    "cuda_artifacts": {
+      "bin_dir_exists": true,
+      "dlls_found": [
+        "cuda_lof.dll",
+        "cuda_lof_optimized.dll",
+        "distance_kernel.dll",
+        "knn_kernel.dll"
+      ]
+    }
+  },
+  "profiling_tools": {
+    "nvcc": {
+      "available": true,
+      "version": "13.5"
+    },
+    "nsys": {
+      "available": false,
+      "version": null
+    },
+    "ncu": {
+      "available": false,
+      "version": null
+    },
+    "nvidia_smi": {
+      "available": true,
+      "version": "581.80"
+    }
+  },
+  "cuda_dll_present": true,
+  "cuda_dll_files": [
+    "cuda_lof.dll",
+    "cuda_lof_optimized.dll",
+    "distance_kernel.dll",
+    "knn_kernel.dll"
+  ],
+  "can_run_gpu_profiling": true,
+  "can_run_cuda_event_timing": true,
+  "can_run_nsight_compute": false,
+  "can_run_nsight_systems": false,
+  "limitations": [
+    "Nsight Compute (ncu) not found \u2014 per-kernel occupancy/register/throughput metrics cannot be collected.",
+    "Nsight Systems (nsys) not found \u2014 timeline-level GPU/CPU/transfer tracing cannot be collected."
+  ]
+}

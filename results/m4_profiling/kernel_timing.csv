@@ -1,0 +1,11 @@
+subset,stage,mean_ms,median_ms,min_ms,max_ms,std_ms,repetitions,measurement_classification,reason
+10k,pairwise_distance_kernel,44.93597,42.08537,29.49395,73.18125,15.73374,10,MEASURED,
+10k,knn_kernel,9.96096,9.17658,7.71482,14.6688,2.5045,10,MEASURED,
+10k,reachability_distance_kernel,0.0487,0.04915,0.02944,0.0768,0.01547,10,MEASURED,
+10k,lrd_kernel,0.05393,0.02963,0.02253,0.21197,0.05751,10,MEASURED,
+10k,lof_scoring_kernel,0.04844,0.03282,0.02048,0.19354,0.05192,10,MEASURED,
+25k,pairwise_distance_kernel,228.22422,226.91104,204.80515,253.92288,16.87299,10,MEASURED,
+25k,knn_kernel,46.22561,46.1993,45.49325,47.11834,0.53482,10,MEASURED,
+25k,reachability_distance_kernel,0.08346,0.08192,0.07987,0.08909,0.00365,10,MEASURED,
+25k,lrd_kernel,0.01168,0.00819,0.00819,0.04,0.00996,10,MEASURED,
+25k,lof_scoring_kernel,0.0297,0.02458,0.02253,0.0471,0.00939,10,MEASURED,

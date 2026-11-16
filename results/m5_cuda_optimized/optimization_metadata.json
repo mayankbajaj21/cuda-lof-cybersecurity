@@ -1,0 +1,41 @@
+{
+  "milestone": "M5",
+  "generated_at_utc": "2026-11-14T22:31:47.026333+00:00",
+  "hardware": {
+    "available": true,
+    "vendor": "NVIDIA",
+    "gpu_count": 1,
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "total_memory_mb": 6141.0,
+        "free_memory_mb": 5921.0,
+        "used_memory_mb": 0.0,
+        "compute_capability": "8.9",
+        "utilization_percent": 0.0,
+        "temperature_celsius": 53.0,
+        "power_draw_watts": 17.67,
+        "sm_clock_mhz": 2625.0
+      }
+    ],
+    "driver_version": "581.80",
+    "cuda_runtime_version": "13.0",
+    "detection_method": "nvidia-smi",
+    "reason_unavailable": null
+  },
+  "os": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.13.3",
+  "numpy_version": "2.2.6",
+  "k": 20,
+  "contamination": 0.1,
+  "n_warmup": 2,
+  "n_repeats": 10,
+  "optimizations_applied": [
+    "Pairwise distance: 32x32 shared-memory tiled kernel (pairwise_distance_tiled_kernel) replacing the naive per-thread global-memory kernel. Justified by M4: 78.9-80.0% of kernel time at N=10K/25K.",
+    "k-NN: right-sized top-k register buffer (OPT_KNN_MAX_K=32 vs. naive KNN_MAX_K=256) plus float4-vectorized row scan. Justified by M4: 19.9-20.9% of kernel time at N=10K/25K."
+  ],
+  "optimizations_not_attempted": [
+    "Reachability distance, LRD, LOF-scoring kernels left unmodified - M4 measured these as sub-millisecond and together under 0.2% of total kernel time at both 10K and 25K, so optimizing them would not move end-to-end performance measurably."
+  ],
+  "optimized_knn_constraint": "Optimized k-NN/pipeline kernels support k <= 32 (project default k=20 is within range)."
+}

@@ -24,6 +24,7 @@ from dashboard import (
     pages_history,
     pages_memory,
     pages_optimization,
+    pages_optimization_journey,
     pages_overview,
     pages_profiling,
 )
@@ -35,6 +36,7 @@ PAGES = {
     "Hardware & Environment": pages_hardware,
     "Dataset Analytics": pages_dataset,
     "CPU vs. GPU Benchmarks": pages_benchmarks,
+    "Optimization Journey": pages_optimization_journey,
     "Benchmark Lab": pages_benchmark_lab,
     "CUDA Profiling": pages_profiling,
     "CUDA Optimization": pages_optimization,

@@ -1,0 +1,127 @@
+{
+  "milestone": "M8",
+  "started_utc": "2026-11-16T06:03:09.526131+00:00",
+  "finished_utc": "2026-11-16T06:06:33.895145+00:00",
+  "hardware_and_software": {
+    "cpu": {
+      "model": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+      "architecture": "AMD64",
+      "physical_cores": 8,
+      "logical_cores": 16,
+      "max_frequency_mhz": 3201.0,
+      "current_frequency_mhz": 3201.0
+    },
+    "memory": {
+      "total_ram_bytes": 16438312960,
+      "total_ram_gb": 15.31,
+      "available_ram_bytes": 9013411840,
+      "available_ram_gb": 8.39,
+      "used_ram_percent": 45.2
+    },
+    "gpu": {
+      "available": true,
+      "vendor": "NVIDIA",
+      "gpu_count": 1,
+      "gpus": [
+        {
+          "name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+          "total_memory_mb": 6141.0,
+          "free_memory_mb": 5811.0,
+          "used_memory_mb": 111.0,
+          "compute_capability": "8.9",
+          "utilization_percent": 0.0,
+          "temperature_celsius": 55.0,
+          "power_draw_watts": 15.11,
+          "sm_clock_mhz": 2130.0
+        }
+      ],
+      "driver_version": "581.80",
+      "cuda_runtime_version": "13.0",
+      "detection_method": "nvidia-smi",
+      "reason_unavailable": null
+    },
+    "os": {
+      "system": "Windows",
+      "release": "11",
+      "version": "10.0.26300",
+      "platform_string": "Windows-11-10.0.26300-SP0",
+      "architecture": "AMD64"
+    },
+    "python": {
+      "version": "3.13.3",
+      "implementation": "CPython",
+      "numpy_version": "2.2.6"
+    },
+    "tools": {
+      "nvcc": {
+        "available": true,
+        "version": "13.5"
+      },
+      "nsys": {
+        "available": false,
+        "version": null
+      },
+      "ncu": {
+        "available": false,
+        "version": null
+      },
+      "nvidia_smi": {
+        "available": true,
+        "version": "581.80"
+      }
+    },
+    "cuda_artifacts": {
+      "bin_dir_exists": true,
+      "dlls_found": [
+        "cuda_lof.dll",
+        "cuda_lof_optimized.dll",
+        "cuda_lof_variants.dll",
+        "distance_kernel.dll",
+        "knn_kernel.dll"
+      ]
+    }
+  },
+  "power": {
+    "ac_power_plugged": true,
+    "battery_percent": 32.0,
+    "active_power_scheme": "Power Scheme GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (Balanced)",
+    "warning": null
+  },
+  "build": {
+    "dll": "bin/cuda_lof_variants.dll",
+    "script": "scripts/build_cuda_lof_variants.bat",
+    "nvcc_flags": "-arch=%ARCH% -O2 -lineinfo --shared (ARCH=sm_89 for this run)"
+  },
+  "parameters": {
+    "k": 20,
+    "contamination": 0.1,
+    "gpu_warmups": 3,
+    "gpu_repetitions": 10,
+    "cpu_warmups": 1,
+    "cpu_repetitions": 5,
+    "gpu_rep_order": "interleaved across variants",
+    "vram_safety_margin_bytes": 314572800
+  },
+  "datasets": {
+    "10k": "data/processed/subsets/10k/subset_10k.npz",
+    "25k": "data/processed/subsets/25k/subset_25k.npz",
+    "45k (first 45k rows of 100k subset)": "first 45,000 rows of data/processed/subsets/100k/subset_100k.npz (in memory only; no file written)",
+    "dataset_note": "data/processed is a synthetic CICIDS2017-shaped placeholder"
+  },
+  "free_vram_bytes_before_each_subset": {
+    "10k": 6208618496,
+    "25k": 6093275136,
+    "45k (first 45k rows of 100k subset)": 6093275136
+  },
+  "ram_available_bytes_before_each_cpu_run": {
+    "10k": 3020210176,
+    "25k": 2890903552
+  },
+  "cpu_ram_note": "Low available RAM can force paging and inflate CPU times; see ram_available_bytes_at_start.",
+  "nsight_compute": {
+    "exe": "C:\\Program Files\\NVIDIA Corporation\\Nsight Compute 2026.4.0\\target\\windows-desktop-win7-x64\\ncu.exe",
+    "status": "UNAVAILABLE",
+    "error": "==ERROR== ERR_NVGPUCTRPERM - The user does not have permission to access NVIDIA GPU Performance Counters on the target device 0. For instructions on enabling permissions and to get more information see https://developer.nvidia.com/ERR_NVGPUCTRPERM",
+    "fallback": "cudaFuncGetAttributes + cudaOccupancyMaxActiveBlocksPerMultiprocessor"
+  }
+}

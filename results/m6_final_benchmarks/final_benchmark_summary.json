@@ -1,0 +1,108 @@
+{
+  "milestone": "M6",
+  "generated_at_utc": "2026-11-14T22:43:42.058926+00:00",
+  "hardware": {
+    "available": true,
+    "vendor": "NVIDIA",
+    "gpu_count": 1,
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "total_memory_mb": 6141.0,
+        "free_memory_mb": 5914.0,
+        "used_memory_mb": 8.0,
+        "compute_capability": "8.9",
+        "utilization_percent": 0.0,
+        "temperature_celsius": 51.0,
+        "power_draw_watts": 1.97,
+        "sm_clock_mhz": 210.0
+      }
+    ],
+    "driver_version": "581.80",
+    "cuda_runtime_version": "13.0",
+    "detection_method": "nvidia-smi",
+    "reason_unavailable": null
+  },
+  "os": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.13.3",
+  "numpy_version": "2.2.6",
+  "k": 20,
+  "contamination": 0.1,
+  "n_warmup": 2,
+  "n_repeats": 10,
+  "benchmarked_sizes": [
+    "10k",
+    "25k"
+  ],
+  "unavailable_sizes": [
+    "100k",
+    "250k",
+    "500k",
+    "1m"
+  ],
+  "data_provenance_note": "Processed dataset on this machine was generated from a synthetic CICIDS2017-shaped placeholder (data/raw/ has no real CICIDS2017 CSVs); timing/memory scalability findings depend only on N and D=68, not on real vs. synthetic feature values.",
+  "per_subset": {
+    "10k": {
+      "n_samples": 10000,
+      "n_features": 68,
+      "cpu_end_to_end_ms": {
+        "mean": 5592.946,
+        "median": 5476.855,
+        "min": 5131.54,
+        "max": 6520.44,
+        "std": 461.2295565888108,
+        "repetitions": 10
+      },
+      "naive_cuda_end_to_end_ms": {
+        "mean": 112.96845779418945,
+        "median": 62.82279968261719,
+        "min": 54.710304260253906,
+        "max": 328.6820068359375,
+        "std": 86.7069416944574,
+        "repetitions": 10
+      },
+      "optimized_cuda_end_to_end_ms": {
+        "mean": 50.98378562927246,
+        "median": 51.22270393371582,
+        "min": 48.41904067993164,
+        "max": 52.62384033203125,
+        "std": 1.5612596304424802,
+        "repetitions": 10
+      },
+      "naive_speedup_vs_cpu": 49.509,
+      "optimized_speedup_vs_cpu": 109.7,
+      "optimized_speedup_vs_naive": 2.216
+    },
+    "25k": {
+      "n_samples": 25000,
+      "n_features": 68,
+      "cpu_end_to_end_ms": {
+        "mean": 37648.602,
+        "median": 37720.21,
+        "min": 35037.08,
+        "max": 40556.759999999995,
+        "std": 1909.9336577122822,
+        "repetitions": 10
+      },
+      "naive_cuda_end_to_end_ms": {
+        "mean": 351.86838989257814,
+        "median": 342.57057189941406,
+        "min": 317.2413024902344,
+        "max": 418.3503112792969,
+        "std": 30.385970531180977,
+        "repetitions": 10
+      },
+      "optimized_cuda_end_to_end_ms": {
+        "mean": 315.4289031982422,
+        "median": 312.81517028808594,
+        "min": 305.96307373046875,
+        "max": 334.96807861328125,
+        "std": 9.98318708407932,
+        "repetitions": 10
+      },
+      "naive_speedup_vs_cpu": 106.996,
+      "optimized_speedup_vs_cpu": 119.357,
+      "optimized_speedup_vs_naive": 1.116
+    }
+  }
+}

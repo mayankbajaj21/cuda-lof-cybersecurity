@@ -1,0 +1,265 @@
+{
+  "dataset_name": "CICIDS2017",
+  "subset_name": "25k",
+  "n_samples": 25000,
+  "n_features": 68,
+  "k": 20,
+  "contamination": 0.1,
+  "num_iterations": 3,
+  "num_warmup": 1,
+  "warmup_policy": "1 initial warm-up execution strictly excluded from reported statistics",
+  "timing_methodology": "CUDA Hardware Events (cudaEventElapsedTime) with host synchronization",
+  "hardware": {
+    "os": {
+      "system": "Windows",
+      "release": "11",
+      "version": "10.0.26300",
+      "architecture": "AMD64"
+    },
+    "python": {
+      "version": "3.13.3",
+      "compiler": "MSC v.1943 64 bit (AMD64)",
+      "implementation": "CPython"
+    },
+    "cpu": {
+      "model": "13th Gen Intel(R) Core(TM) i5-13450HX",
+      "physical_cores": 10,
+      "logical_processors": 16
+    },
+    "gpu": {
+      "model": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+      "compute_capability": "8.6",
+      "sm_count": 20,
+      "total_vram_bytes": 6441926656,
+      "total_vram_gb": 6.0,
+      "cuda_toolkit": "12.8",
+      "nvcc_version": "V12.8.61",
+      "driver_version": "581.86",
+      "msvc_version": "v143 / 14.38.33130"
+    }
+  },
+  "timings_aggregated": {
+    "h2d_ms": {
+      "mean": 1.099562684694926,
+      "std": 0.12692886538194845,
+      "min": 0.939520001411438,
+      "max": 1.2499840259552002
+    },
+    "h2d_seconds": {
+      "mean": 0.0010995626846949259,
+      "std": 0.00012692886538194845,
+      "min": 0.000939520001411438,
+      "max": 0.0012499840259552002
+    },
+    "distance_kernel_ms": {
+      "mean": 169.59225463867188,
+      "std": 0.4725859822304149,
+      "min": 168.9283447265625,
+      "max": 169.99072265625
+    },
+    "distance_kernel_seconds": {
+      "mean": 0.1695922546386719,
+      "std": 0.00047258598223041135,
+      "min": 0.1689283447265625,
+      "max": 0.16999072265625
+    },
+    "knn_kernel_ms": {
+      "mean": 42.32048034667969,
+      "std": 0.028012055980471916,
+      "min": 42.28092956542969,
+      "max": 42.34220886230469
+    },
+    "knn_kernel_seconds": {
+      "mean": 0.042320480346679686,
+      "std": 2.8012055980472925e-05,
+      "min": 0.042280929565429684,
+      "max": 0.042342208862304685
+    },
+    "reachability_kernel_ms": {
+      "mean": 0.06650666644175847,
+      "std": 7.542529764762077e-05,
+      "min": 0.06639999896287918,
+      "max": 0.06656000018119812
+    },
+    "reachability_kernel_seconds": {
+      "mean": 6.650666644175847e-05,
+      "std": 7.542529764761567e-08,
+      "min": 6.639999896287919e-05,
+      "max": 6.656000018119811e-05
+    },
+    "lrd_kernel_ms": {
+      "mean": 0.03793066677947839,
+      "std": 0.0075250746701282815,
+      "min": 0.028672000393271446,
+      "max": 0.04710400104522705
+    },
+    "lrd_kernel_seconds": {
+      "mean": 3.7930666779478397e-05,
+      "std": 7.5250746701282806e-06,
+      "min": 2.8672000393271447e-05,
+      "max": 4.710400104522705e-05
+    },
+    "lof_kernel_ms": {
+      "mean": 0.05427199974656105,
+      "std": 0.005852646648997042,
+      "min": 0.04915200173854828,
+      "max": 0.062463998794555664
+    },
+    "lof_kernel_seconds": {
+      "mean": 5.427199974656105e-05,
+      "std": 5.852646648997043e-06,
+      "min": 4.915200173854828e-05,
+      "max": 6.246399879455566e-05
+    },
+    "d2h_ms": {
+      "mean": 0.09472000102202098,
+      "std": 0.007353919670181241,
+      "min": 0.08656000345945358,
+      "max": 0.10438399761915207
+    },
+    "d2h_seconds": {
+      "mean": 9.472000102202098e-05,
+      "std": 7.353919670181242e-06,
+      "min": 8.656000345945359e-05,
+      "max": 0.00010438399761915208
+    },
+    "total_kernel_ms": {
+      "mean": 212.07144165039062,
+      "std": 0.5005645258133631,
+      "min": 211.3668212890625,
+      "max": 212.4827423095703
+    },
+    "total_kernel_seconds": {
+      "mean": 0.2120714416503906,
+      "std": 0.0005005645258133617,
+      "min": 0.2113668212890625,
+      "max": 0.21248274230957032
+    },
+    "end_to_end_ms": {
+      "mean": 296.9927571614583,
+      "std": 1.2545424895014632,
+      "min": 295.81585693359375,
+      "max": 298.7309875488281
+    },
+    "end_to_end_seconds": {
+      "mean": 0.2969927571614583,
+      "std": 0.001254542489501451,
+      "min": 0.29581585693359375,
+      "max": 0.2987309875488281
+    }
+  },
+  "iteration_raw_timings": [
+    {
+      "h2d_ms": 1.2499840259552002,
+      "distance_kernel_ms": 168.9283447265625,
+      "knn_kernel_ms": 42.28092956542969,
+      "reachability_kernel_ms": 0.06639999896287918,
+      "lrd_kernel_ms": 0.028672000393271446,
+      "lof_kernel_ms": 0.062463998794555664,
+      "d2h_ms": 0.09321600198745728,
+      "total_kernel_ms": 211.3668212890625,
+      "end_to_end_ms": 298.7309875488281,
+      "h2d_seconds": 0.0012499840259552002,
+      "distance_kernel_seconds": 0.1689283447265625,
+      "knn_kernel_seconds": 0.042280929565429684,
+      "reachability_kernel_seconds": 6.639999896287919e-05,
+      "lrd_kernel_seconds": 2.8672000393271447e-05,
+      "lof_kernel_seconds": 6.246399879455566e-05,
+      "d2h_seconds": 9.321600198745727e-05,
+      "total_kernel_seconds": 0.2113668212890625,
+      "end_to_end_seconds": 0.2987309875488281,
+      "host_wall_time_seconds": 0.29920310000306927
+    },
+    {
+      "h2d_ms": 0.939520001411438,
+      "distance_kernel_ms": 169.99072265625,
+      "knn_kernel_ms": 42.33830261230469,
+      "reachability_kernel_ms": 0.06656000018119812,
+      "lrd_kernel_ms": 0.038015998899936676,
+      "lof_kernel_ms": 0.04915200173854828,
+      "d2h_ms": 0.10438399761915207,
+      "total_kernel_ms": 212.4827423095703,
+      "end_to_end_ms": 295.81585693359375,
+      "h2d_seconds": 0.000939520001411438,
+      "distance_kernel_seconds": 0.16999072265625,
+      "knn_kernel_seconds": 0.04233830261230469,
+      "reachability_kernel_seconds": 6.656000018119811e-05,
+      "lrd_kernel_seconds": 3.801599889993668e-05,
+      "lof_kernel_seconds": 4.915200173854828e-05,
+      "d2h_seconds": 0.00010438399761915208,
+      "total_kernel_seconds": 0.21248274230957032,
+      "end_to_end_seconds": 0.29581585693359375,
+      "host_wall_time_seconds": 0.2967328999948222
+    },
+    {
+      "h2d_ms": 1.1091840267181396,
+      "distance_kernel_ms": 169.85769653320312,
+      "knn_kernel_ms": 42.34220886230469,
+      "reachability_kernel_ms": 0.06656000018119812,
+      "lrd_kernel_ms": 0.04710400104522705,
+      "lof_kernel_ms": 0.05119999870657921,
+      "d2h_ms": 0.08656000345945358,
+      "total_kernel_ms": 212.36476135253906,
+      "end_to_end_ms": 296.4314270019531,
+      "h2d_seconds": 0.0011091840267181397,
+      "distance_kernel_seconds": 0.16985769653320312,
+      "knn_kernel_seconds": 0.042342208862304685,
+      "reachability_kernel_seconds": 6.656000018119811e-05,
+      "lrd_kernel_seconds": 4.710400104522705e-05,
+      "lof_kernel_seconds": 5.119999870657921e-05,
+      "d2h_seconds": 8.656000345945359e-05,
+      "total_kernel_seconds": 0.21236476135253907,
+      "end_to_end_seconds": 0.29643142700195313,
+      "host_wall_time_seconds": 0.2972332999925129
+    }
+  ],
+  "performance_summary": {
+    "cuda_h2d_seconds": 0.0010995626846949259,
+    "cuda_distance_kernel_seconds": 0.1695922546386719,
+    "cuda_knn_kernel_seconds": 0.042320480346679686,
+    "cuda_reachability_kernel_seconds": 6.650666644175847e-05,
+    "cuda_lrd_kernel_seconds": 3.7930666779478397e-05,
+    "cuda_lof_kernel_seconds": 5.427199974656105e-05,
+    "cuda_total_kernel_seconds": 0.21207144165039063,
+    "cuda_d2h_seconds": 9.472000102202098e-05,
+    "cuda_end_to_end_seconds": 0.2969927571614583,
+    "cuda_throughput_records_per_sec": 84177.1369744512,
+    "cpu_end_to_end_seconds": 19.6976,
+    "cpu_compute_seconds": 19.6596,
+    "cpu_throughput_records_per_sec": 1269.1901551458045,
+    "end_to_end_speedup": 66.323502930718,
+    "kernel_compute_speedup": 92.70272247410729
+  },
+  "score_statistics": {
+    "min": 0.9750087857246399,
+    "max": 1.2479842901229858,
+    "mean": 1.049720048904419,
+    "std": 0.04066590592265129,
+    "median": 1.0429799556732178,
+    "p25": 1.0183327198028564,
+    "p75": 1.0742449760437012,
+    "p90": 1.1059192419052124,
+    "p95": 1.1272671222686768,
+    "p99": 1.1649901866912842
+  },
+  "correctness": {
+    "max_absolute_difference": 2966723072.0,
+    "mean_absolute_difference": 1209705.75,
+    "pearson_correlation": 0.0019601366846722754,
+    "cpu_threshold": 1.9439688920974731,
+    "cuda_threshold": 1.1059192419052124,
+    "cpu_anomaly_count": 2500,
+    "cuda_anomaly_count": 2500,
+    "anomaly_count_agreement_ratio": 0.81896,
+    "anomaly_count_agreement_percent": 81.896,
+    "prediction_disagreements": 4526,
+    "same_distance_diagnostic": {
+      "description": "Diagnostic numerical consistency check executing CPU LOF stages directly on CUDA pairwise distance matrix to isolate distance formulation differences. This is a correctness diagnostic and NOT the CPU performance baseline.",
+      "pearson_correlation": 0.9999999999960104,
+      "max_absolute_difference": 5.960464477539062e-07,
+      "mean_absolute_difference": 7.475137664414433e-08,
+      "is_performance_baseline": false
+    }
+  },
+  "memory_limit_note": "Dense 100K+ baseline is excluded because a dense float32 distance matrix requires O(N^2 * 4 bytes). At N=100,000 this is 40.0 GB, which exceeds the physical 6 GB VRAM of the NVIDIA RTX 3050 Laptop GPU."
+}

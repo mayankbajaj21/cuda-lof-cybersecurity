@@ -8,6 +8,7 @@ ARTIFACTS = [
     ("M4 profiling summary", ("results", "m4_profiling", "profiling_summary.json")),
     ("M5 optimization summary", ("results", "m5_cuda_optimized", "optimization_summary.json")),
     ("M6 final benchmark summary", ("results", "m6_final_benchmarks", "final_benchmark_summary.json")),
+    ("M8 advanced optimizations (same-session run)", ("results", "m8_advanced_optimizations", "benchmark_metadata.json")),
 ]
 
 
@@ -23,7 +24,7 @@ def render():
             rows.append({"artifact": label, "timestamp": "not available", "source": "n/a"})
             continue
         ts = None
-        for key in ("generated_at_utc", "timestamp", "generated_at"):
+        for key in ("generated_at_utc", "timestamp", "generated_at", "finished_utc", "started_utc"):
             if isinstance(data, dict) and key in data:
                 ts = data[key]
                 break

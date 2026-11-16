@@ -89,24 +89,11 @@ results/*
 # Allow completed M2 CPU baseline results
 !results/m2_cpu_baseline/**
 
-# Future milestone result directories (protect future outputs from accidental commits)
-results/m3_cuda_baseline/**
-!results/m3_cuda_baseline/**/
-!results/m3_cuda_baseline/**/.gitkeep
-!results/m3_cuda_baseline/.gitkeep
-
-results/m4_profiling/**
-!results/m4_profiling/**/
-!results/m4_profiling/**/.gitkeep
-!results/m4_profiling/.gitkeep
-
-results/m5_cuda_optimized/**
-!results/m5_cuda_optimized/**/
-!results/m5_cuda_optimized/**/.gitkeep
-!results/m5_cuda_optimized/.gitkeep
-
-results/m6_final_benchmarks/**
-!results/m6_final_benchmarks/**/
-!results/m6_final_benchmarks/**/.gitkeep
-!results/m6_final_benchmarks/.gitkeep
+# Allow completed M3-M8 results (small CSV/JSON/MD/PNG; the dashboard reads them)
+!results/m3_cuda_baseline/**
+!results/m4_profiling/**
+!results/m5_cuda_optimized/**
+!results/m6_final_benchmarks/**
+!results/m8_advanced_optimizations/**
+!results/benchmark_lab/**
 

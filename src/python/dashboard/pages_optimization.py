@@ -6,6 +6,10 @@ from .components import metric_row, not_available, section
 
 def render():
     st.title("CUDA Optimization (M5)")
+    st.info(
+        "These M5 numbers come from an earlier, separate run. For a same-session comparison including the "
+        "outside-syllabus techniques (V2–V5), see the **Optimization Journey** page."
+    )
 
     kc = loaders.load_csv("results", "m5_cuda_optimized", "kernel_comparison.csv")
     if kc is None or kc.empty:

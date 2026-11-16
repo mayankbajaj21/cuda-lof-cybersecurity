@@ -1,0 +1,225 @@
+{
+  "status": "measured",
+  "per_subset": {
+    "10k": {
+      "V0 Naive": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 48.54867172241211,
+        "distance_mean_ms": 28.169782066345213,
+        "speedup_vs_cpu": 61.5793675488576,
+        "speedup_vs_v0": 1.0,
+        "speedup_vs_v1": 0.9160852073464515,
+        "peak_gpu_mem_bytes_tracked": 402720000,
+        "unavailable_reason": null
+      },
+      "V1 Syllabus-optimized": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 44.4747200012207,
+        "distance_mean_ms": 24.655014419555663,
+        "speedup_vs_cpu": 67.22013089506103,
+        "speedup_vs_v0": 1.0916015147724278,
+        "speedup_vs_v1": 1.0,
+        "peak_gpu_mem_bytes_tracked": 402720000,
+        "unavailable_reason": null
+      },
+      "V2 Register blocking": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 25.457056045532227,
+        "distance_mean_ms": 5.818041610717773,
+        "speedup_vs_cpu": 117.4368510897758,
+        "speedup_vs_v0": 1.9070811501368603,
+        "speedup_vs_v1": 1.7470488308496348,
+        "peak_gpu_mem_bytes_tracked": 402720000,
+        "unavailable_reason": null
+      },
+      "V3 Async copy + double buffering": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 49.37227249145508,
+        "distance_mean_ms": 29.641542434692383,
+        "speedup_vs_cpu": 60.552134814549156,
+        "speedup_vs_v0": 0.9833185566010657,
+        "speedup_vs_v1": 0.9008035838115006,
+        "peak_gpu_mem_bytes_tracked": 402720000,
+        "unavailable_reason": null
+      },
+      "V4 FP16 storage": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 25.683839797973633,
+        "distance_mean_ms": 13.89771203994751,
+        "speedup_vs_cpu": 116.39990451268558,
+        "speedup_vs_v0": 1.8902419616494583,
+        "speedup_vs_v1": 1.7316226993726074,
+        "peak_gpu_mem_bytes_tracked": 201600004,
+        "unavailable_reason": null
+      },
+      "V5 Combined": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 16.26516819000244,
+        "distance_mean_ms": 4.2274271011352536,
+        "speedup_vs_cpu": 183.8036019720246,
+        "speedup_vs_v0": 2.984824451569647,
+        "speedup_vs_v1": 2.7343535266089387,
+        "peak_gpu_mem_bytes_tracked": 201600004,
+        "unavailable_reason": null
+      },
+      "CPU (NumPy)": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 2989.5965000032447,
+        "distance_mean_ms": 1117.1519999999998,
+        "speedup_vs_cpu": 1.0,
+        "speedup_vs_v0": 0.016239205432023826,
+        "speedup_vs_v1": 0.014876495875337167,
+        "peak_gpu_mem_bytes_tracked": null,
+        "unavailable_reason": null
+      }
+    },
+    "25k": {
+      "V0 Naive": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 293.69529724121094,
+        "distance_mean_ms": 176.09308929443358,
+        "speedup_vs_cpu": 73.2196545262685,
+        "speedup_vs_v0": 1.0,
+        "speedup_vs_v1": 0.9131379134505756,
+        "peak_gpu_mem_bytes_tracked": 2506800000,
+        "unavailable_reason": null
+      },
+      "V1 Syllabus-optimized": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 268.18431091308594,
+        "distance_mean_ms": 157.4599868774414,
+        "speedup_vs_cpu": 80.18466153659666,
+        "speedup_vs_v0": 1.0951248275533638,
+        "speedup_vs_v1": 1.0,
+        "peak_gpu_mem_bytes_tracked": 2506800000,
+        "unavailable_reason": null
+      },
+      "V2 Register blocking": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 149.66070556640625,
+        "distance_mean_ms": 36.0685474395752,
+        "speedup_vs_cpu": 143.68680221442295,
+        "speedup_vs_v0": 1.9624075413094642,
+        "speedup_vs_v1": 1.7919487276109984,
+        "peak_gpu_mem_bytes_tracked": 2506800000,
+        "unavailable_reason": null
+      },
+      "V3 Async copy + double buffering": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 299.5211181640625,
+        "distance_mean_ms": 185.6085968017578,
+        "speedup_vs_cpu": 71.79549920153627,
+        "speedup_vs_v0": 0.98054954869773,
+        "speedup_vs_v1": 0.8953769689327487,
+        "peak_gpu_mem_bytes_tracked": 2506800000,
+        "unavailable_reason": null
+      },
+      "V4 FP16 storage": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 148.8682098388672,
+        "distance_mean_ms": 89.0973014831543,
+        "speedup_vs_cpu": 144.45171486422194,
+        "speedup_vs_v0": 1.9728543626547435,
+        "speedup_vs_v1": 1.8014881162564176,
+        "peak_gpu_mem_bytes_tracked": 1254000004,
+        "unavailable_reason": null
+      },
+      "V5 Combined": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 88.15433502197266,
+        "distance_mean_ms": 26.55160026550293,
+        "speedup_vs_cpu": 243.93886238982142,
+        "speedup_vs_v0": 3.331603569671381,
+        "speedup_vs_v1": 3.042213532054214,
+        "peak_gpu_mem_bytes_tracked": 1254000004,
+        "unavailable_reason": null
+      },
+      "CPU (NumPy)": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 21504.268199991202,
+        "distance_mean_ms": 8694.558,
+        "speedup_vs_cpu": 1.0,
+        "speedup_vs_v0": 0.013657535076749605,
+        "speedup_vs_v1": 0.012471213082861182,
+        "peak_gpu_mem_bytes_tracked": null,
+        "unavailable_reason": null
+      }
+    },
+    "45k (first 45k rows of 100k subset)": {
+      "V0 Naive": {
+        "classification": "UNAVAILABLE",
+        "end_to_end_median_ms": null,
+        "distance_mean_ms": null,
+        "speedup_vs_cpu": null,
+        "speedup_vs_v0": null,
+        "speedup_vs_v1": null,
+        "peak_gpu_mem_bytes_tracked": null,
+        "unavailable_reason": "Needs ~7.56 GiB (+300 MiB margin) but only 5.67 GiB VRAM was free at run time"
+      },
+      "V1 Syllabus-optimized": {
+        "classification": "UNAVAILABLE",
+        "end_to_end_median_ms": null,
+        "distance_mean_ms": null,
+        "speedup_vs_cpu": null,
+        "speedup_vs_v0": null,
+        "speedup_vs_v1": null,
+        "peak_gpu_mem_bytes_tracked": null,
+        "unavailable_reason": "Needs ~7.56 GiB (+300 MiB margin) but only 5.67 GiB VRAM was free at run time"
+      },
+      "V2 Register blocking": {
+        "classification": "UNAVAILABLE",
+        "end_to_end_median_ms": null,
+        "distance_mean_ms": null,
+        "speedup_vs_cpu": null,
+        "speedup_vs_v0": null,
+        "speedup_vs_v1": null,
+        "peak_gpu_mem_bytes_tracked": null,
+        "unavailable_reason": "Needs ~7.56 GiB (+300 MiB margin) but only 5.67 GiB VRAM was free at run time"
+      },
+      "V3 Async copy + double buffering": {
+        "classification": "UNAVAILABLE",
+        "end_to_end_median_ms": null,
+        "distance_mean_ms": null,
+        "speedup_vs_cpu": null,
+        "speedup_vs_v0": null,
+        "speedup_vs_v1": null,
+        "peak_gpu_mem_bytes_tracked": null,
+        "unavailable_reason": "Needs ~7.56 GiB (+300 MiB margin) but only 5.67 GiB VRAM was free at run time"
+      },
+      "V4 FP16 storage": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 466.1631622314453,
+        "distance_mean_ms": 290.2733428955078,
+        "speedup_vs_cpu": null,
+        "speedup_vs_v0": null,
+        "speedup_vs_v1": null,
+        "peak_gpu_mem_bytes_tracked": 4057200004,
+        "unavailable_reason": null
+      },
+      "V5 Combined": {
+        "classification": "MEASURED",
+        "end_to_end_median_ms": 270.4453430175781,
+        "distance_mean_ms": 91.53052520751953,
+        "speedup_vs_cpu": null,
+        "speedup_vs_v0": null,
+        "speedup_vs_v1": null,
+        "peak_gpu_mem_bytes_tracked": 4057200004,
+        "unavailable_reason": null
+      },
+      "CPU (NumPy)": {
+        "classification": "UNAVAILABLE",
+        "end_to_end_median_ms": null,
+        "distance_mean_ms": null,
+        "speedup_vs_cpu": null,
+        "speedup_vs_v0": null,
+        "speedup_vs_v1": null,
+        "peak_gpu_mem_bytes_tracked": null,
+        "unavailable_reason": "Not run: the CPU reference materialises at least one 45000x45000 float32 matrix (7.5 GiB) plus temporaries; 8.7 GiB RAM was available. O(N^2) extrapolation from the 25k median: ~70 s per run (ESTIMATED)."
+      }
+    }
+  },
+  "nsight_compute": {
+    "status": "UNAVAILABLE",
+    "error": "==ERROR== ERR_NVGPUCTRPERM - The user does not have permission to access NVIDIA GPU Performance Counters on the target device 0. For instructions on enabling permissions and to get more information see https://developer.nvidia.com/ERR_NVGPUCTRPERM"
+  }
+}

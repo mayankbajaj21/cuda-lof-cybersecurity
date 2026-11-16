@@ -60,11 +60,38 @@ def _live_capability():
         return {"can_run_gpu_profiling": False, "limitations": [f"Capability check failed: {exc}"]}
 
 
-def _estimate_memory_gb(n, k=20):
-    """Same formula as results/m6_final_benchmarks/memory_analysis.csv."""
-    distance_bytes = n * n * 4
+def _estimate_memory_gb(n, k=20, bytes_per_entry=4):
+    """Same formula as results/m6_final_benchmarks/memory_analysis.csv; FP16 variants use 2 bytes/entry."""
+    distance_bytes = n * n * bytes_per_entry
     pipeline_bytes = distance_bytes + n * k * 4 * 2 + n * 4 * 2
     return distance_bytes / (1024 ** 3), pipeline_bytes / (1024 ** 3)
+
+
+# Label -> variant id for the M8 variants offered in the lab (V0/V1 are already
+# covered by the "Naive CUDA" / "Optimized CUDA" options above).
+VARIANT_OPTIONS = {
+    "V2 Register blocking (outside syllabus)": 2,
+    "V3 Async copy + double buffering (outside syllabus)": 3,
+    "V4 FP16 storage (outside syllabus, approximate)": 4,
+    "V5 Combined (outside syllabus, approximate)": 5,
+}
+
+
+def _run_variant(X, k, contamination, repetitions, warmup, status_placeholder, variant_id, label):
+    from cuda.lof_variants import compute_lof_variant
+
+    rep_times = []
+    scores = None
+    for i in range(warmup + repetitions):
+        phase = f"Warm-up {i + 1}/{warmup}" if i < warmup else f"Repetition {i - warmup + 1}/{repetitions}"
+        status_placeholder.text(f"Running {label} — {phase}...")
+        lof_scores, timings, _mem = compute_lof_variant(X, k=k, variant=variant_id, eps=1e-10)
+        if i >= warmup:
+            rep_times.append(timings["end_to_end_ms"] / 1000.0)
+            scores = lof_scores
+    threshold = float(np.percentile(scores, 100.0 * (1.0 - contamination)))
+    predictions = np.where(scores >= threshold, 1, 0).astype(np.int8)
+    return scores, predictions, rep_times
 
 
 def _live_free_vram_gb(capability_report):
@@ -143,6 +170,32 @@ def _run_optimized_cuda(X, k, contamination, repetitions, warmup, status_placeho
     return scores, predictions, rep_times
 
 
+_BASE_VARIANT_IDS = {"cpu": -1, "naive_cuda": 0, "optimized_cuda": 1}
+
+
+def _variant_fields(impl_key, variant_id):
+    vid = variant_id if variant_id is not None else _BASE_VARIANT_IDS.get(impl_key)
+    if vid == -1:
+        return {
+            "variant_id": -1,
+            "variant_name": "CPU (NumPy)",
+            "technique_source": "cpu",
+            "exact_or_approximate": "exact",
+        }
+    try:
+        from cuda.lof_variants import VARIANTS
+
+        meta = VARIANTS[vid]
+        return {
+            "variant_id": vid,
+            "variant_name": meta["name"],
+            "technique_source": meta["technique_source"],
+            "exact_or_approximate": meta["exact_or_approximate"],
+        }
+    except Exception:
+        return {"variant_id": vid}
+
+
 def _save_experiment(record):
     os.makedirs(EXPERIMENTS_DIR, exist_ok=True)
     exp_id = f"{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}_{uuid.uuid4().hex[:8]}"
@@ -156,8 +209,9 @@ def _save_experiment(record):
 def render():
     st.title("Interactive Benchmark Lab")
     st.caption(
-        "Run a real, small LOF experiment on this machine right now — CPU, naive CUDA, or "
-        "optimized CUDA — and save the result as a new measured record."
+        "Run a real, small LOF experiment on this machine right now — CPU, naive CUDA, "
+        "syllabus-optimized CUDA, or one of the outside-syllabus variants V2–V5 — and save the "
+        "result as a new measured record."
     )
     synthetic_dataset_banner()
 
@@ -173,6 +227,13 @@ def render():
     except Exception:
         naive_cuda_ok = False
         optimized_cuda_ok = False
+
+    try:
+        from cuda.lof_variants import is_variants_available
+
+        variants_ok = can_gpu and is_variants_available()
+    except Exception:
+        variants_ok = False
 
     subsets = _available_subsets()
     if not subsets:
@@ -190,6 +251,13 @@ def render():
         impl_options.append("Optimized CUDA")
     else:
         st.caption("Optimized CUDA option hidden/disabled — no compiled bin/cuda_lof_optimized.dll or no NVIDIA GPU detected.")
+    if variants_ok:
+        impl_options.extend(VARIANT_OPTIONS.keys())
+    else:
+        st.caption(
+            "V2–V5 options hidden/disabled — no compiled bin/cuda_lof_variants.dll "
+            "(build with scripts\\build_cuda_lof_variants.bat) or no NVIDIA GPU detected."
+        )
 
     col1, col2 = st.columns(2)
     with col1:
@@ -203,10 +271,21 @@ def render():
 
     n = SUBSET_N.get(subset_name, 0)
     is_cpu = implementation.startswith("CPU")
+    variant_id = VARIANT_OPTIONS.get(implementation)
+    is_fp16 = variant_id in (4, 5)
+    variant_k_limit = None
+    if variant_id is not None:
+        try:
+            from cuda.lof_variants import variant_max_k
+
+            variant_k_limit = variant_max_k(variant_id)
+        except Exception:
+            variant_k_limit = None
 
     section("2. Feasibility check (live, before you run)")
-    distance_gb, pipeline_gb = _estimate_memory_gb(n, k)
-    st.write(f"Estimated dense {n:,}×{n:,} distance matrix: **{distance_gb:.2f} GB**")
+    distance_gb, pipeline_gb = _estimate_memory_gb(n, k, bytes_per_entry=2 if is_fp16 else 4)
+    precision = "FP16, 2 bytes/entry" if is_fp16 else "FP32, 4 bytes/entry"
+    st.write(f"Estimated dense {n:,}×{n:,} distance matrix ({precision}): **{distance_gb:.2f} GB**")
     st.write(f"Estimated total pipeline memory: **{pipeline_gb:.2f} GB**")
 
     feasible = True
@@ -235,6 +314,10 @@ def render():
         else:
             feasible = False
             reasons.append("Could not read live free VRAM (no NVIDIA GPU detected via nvidia-smi).")
+
+    if variant_k_limit is not None and k > variant_k_limit:
+        feasible = False
+        reasons.append(f"{implementation} supports k ≤ {variant_k_limit}; lower k to run it.")
 
     smaller_sizes = [s for s in subsets if SUBSET_N[s] < n]
     if not feasible:
@@ -280,6 +363,11 @@ def render():
             elif implementation == "Naive CUDA":
                 impl_key = "naive_cuda"
                 scores, predictions, rep_times = _run_naive_cuda(X, k, contamination, repetitions, warmup, status_placeholder)
+            elif variant_id is not None:
+                impl_key = f"variant_v{variant_id}"
+                scores, predictions, rep_times = _run_variant(
+                    X, k, contamination, repetitions, warmup, status_placeholder, variant_id, implementation
+                )
             else:
                 impl_key = "optimized_cuda"
                 scores, predictions, rep_times = _run_optimized_cuda(X, k, contamination, repetitions, warmup, status_placeholder)
@@ -343,6 +431,7 @@ def render():
                 "hardware_snapshot": capability_report.get("hardware_snapshot"),
                 "source": "benchmark_lab (interactive dashboard run)",
             }
+            record.update(_variant_fields(impl_key, variant_id))
             exp_id, out_path = _save_experiment(record)
             st.success(f"Saved experiment `{exp_id}` to `{os.path.relpath(out_path, loaders.REPO_ROOT)}`")
 

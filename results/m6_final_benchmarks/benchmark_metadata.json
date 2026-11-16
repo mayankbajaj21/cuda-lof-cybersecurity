@@ -1,0 +1,41 @@
+{
+  "hardware": {
+    "available": true,
+    "vendor": "NVIDIA",
+    "gpu_count": 1,
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+        "total_memory_mb": 6141.0,
+        "free_memory_mb": 5914.0,
+        "used_memory_mb": 8.0,
+        "compute_capability": "8.9",
+        "utilization_percent": 0.0,
+        "temperature_celsius": 51.0,
+        "power_draw_watts": 1.97,
+        "sm_clock_mhz": 210.0
+      }
+    ],
+    "driver_version": "581.80",
+    "cuda_runtime_version": "13.0",
+    "detection_method": "nvidia-smi",
+    "reason_unavailable": null
+  },
+  "cpu": {
+    "model": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+    "architecture": "AMD64",
+    "physical_cores": 8,
+    "logical_cores": 16,
+    "max_frequency_mhz": 3201.0,
+    "current_frequency_mhz": 2502.0
+  },
+  "os": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.13.3",
+  "numpy_version": "2.2.6",
+  "cuda_toolkit": {},
+  "k": 20,
+  "contamination": 0.1,
+  "n_warmup": 2,
+  "n_repeats": 10,
+  "methodology": "CUDA-event timing for GPU stages; time.perf_counter-based CPULocalOutlierFactor.timings_ for CPU stages. 2 warm-up runs discarded, 10 timed repetitions per (subset, implementation)."
+}

@@ -1,0 +1,5 @@
+subset,direction,mean_ms,median_ms,min_ms,max_ms,std_ms,repetitions,measurement_classification,reason
+10k,h2d_transfer,0.6833,0.57242,0.3977,1.03734,0.23892,10,MEASURED,
+10k,d2h_transfer,0.10156,0.0992,0.0744,0.14061,0.02026,10,MEASURED,
+25k,h2d_transfer,1.29897,1.16251,1.1471,1.84304,0.24443,10,MEASURED,
+25k,d2h_transfer,0.10835,0.10758,0.08752,0.14352,0.01861,10,MEASURED,

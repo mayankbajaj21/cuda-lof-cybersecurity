@@ -12,7 +12,37 @@ MILESTONES = [
     ("M5", "CUDA optimization", "Done — real"),
     ("M6", "Final benchmarks", "Done at 10K-25K; 100K-1M infeasible (VRAM/RAM wall)"),
     ("M7", "Analysis & dashboard", "Done (this page)"),
+    ("M8", "Advanced optimizations (outside syllabus)", "Done — real; same-session run of CPU + V0–V5"),
 ]
+
+
+def _m8_headline_items(m8):
+    """Headline metrics from the M8 same-session run, or [] if unusable."""
+    if m8 is None or m8.empty:
+        return []
+    try:
+        meas = m8[(m8["classification"] == "MEASURED") & (m8["variant_id"] >= 0)]
+        with_cpu = meas[meas["speedup_vs_cpu"].notna()]
+        best = with_cpu.loc[with_cpu["speedup_vs_cpu"].idxmax()]
+        largest = meas.loc[meas["n_samples"].idxmax()]
+        largest_names = ", ".join(
+            meas[meas["n_samples"] == largest["n_samples"]]["variant_name"].str.split(" ").str[0]
+        )
+        return [
+            (
+                "Best measured speedup vs CPU",
+                f"{best['speedup_vs_cpu']:.0f}x",
+                f"{best['variant_name']} at {best['subset']} (M8 same-session run)",
+            ),
+            ("Fastest variant", best["variant_name"], best["techniques"]),
+            (
+                "Largest benchmarked size",
+                f"{int(largest['n_samples']):,}",
+                f"Only {largest_names} fit at this size (FP16 storage)",
+            ),
+        ]
+    except (KeyError, ValueError):
+        return []
 
 
 def render():
@@ -47,7 +77,11 @@ def render():
     else:
         items.append(("Dataset rows (cleaned)", "n/a", None))
 
-    if m6 is not None and not m6.empty:
+    m8 = loaders.load_csv("results", "m8_advanced_optimizations", "variant_benchmarks.csv")
+    m8_items = _m8_headline_items(m8)
+    if m8_items:
+        items.extend(m8_items)
+    elif m6 is not None and not m6.empty:
         try:
             cpu_25k = m6[(m6["subset"] == "25k") & (m6["implementation"] == "cpu")]["end_to_end_mean_ms"].iloc[0]
             opt_25k = m6[(m6["subset"] == "25k") & (m6["implementation"] == "optimized_cuda")][

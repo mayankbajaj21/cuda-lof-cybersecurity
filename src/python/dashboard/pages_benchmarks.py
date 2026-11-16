@@ -8,6 +8,10 @@ from .components import not_available, section
 def render():
     st.title("CPU vs. GPU Benchmarks")
     st.caption("Real measured end-to-end and kernel-only timing — M6 final benchmark results.")
+    st.info(
+        "These M6 numbers come from an earlier, separate run. For a same-session comparison of CPU and "
+        "every GPU version, see the **Optimization Journey** page."
+    )
 
     df = loaders.load_csv("results", "m6_final_benchmarks", "final_benchmark_results.csv")
     if df is None or df.empty:

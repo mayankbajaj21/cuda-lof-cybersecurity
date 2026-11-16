@@ -1,0 +1,19 @@
+subset,variant_id,variant_name,estimated_peak_bytes,live_free_vram_bytes,safety_margin_bytes,feasible
+10k,0,V0 Naive,402720000,6208618496,314572800,True
+10k,1,V1 Syllabus-optimized,402720000,6208618496,314572800,True
+10k,2,V2 Register blocking,402720000,6208618496,314572800,True
+10k,3,V3 Async copy + double buffering,402720000,6208618496,314572800,True
+10k,4,V4 FP16 storage,201600004,6208618496,314572800,True
+10k,5,V5 Combined,201600004,6208618496,314572800,True
+25k,0,V0 Naive,2506800000,6093275136,314572800,True
+25k,1,V1 Syllabus-optimized,2506800000,6093275136,314572800,True
+25k,2,V2 Register blocking,2506800000,6093275136,314572800,True
+25k,3,V3 Async copy + double buffering,2506800000,6093275136,314572800,True
+25k,4,V4 FP16 storage,1254000004,6093275136,314572800,True
+25k,5,V5 Combined,1254000004,6093275136,314572800,True
+45k (first 45k rows of 100k subset),0,V0 Naive,8112240000,6093275136,314572800,False
+45k (first 45k rows of 100k subset),1,V1 Syllabus-optimized,8112240000,6093275136,314572800,False
+45k (first 45k rows of 100k subset),2,V2 Register blocking,8112240000,6093275136,314572800,False
+45k (first 45k rows of 100k subset),3,V3 Async copy + double buffering,8112240000,6093275136,314572800,False
+45k (first 45k rows of 100k subset),4,V4 FP16 storage,4057200004,6093275136,314572800,True
+45k (first 45k rows of 100k subset),5,V5 Combined,4057200004,6093275136,314572800,True

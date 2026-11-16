@@ -19,6 +19,7 @@ All milestones below are complete with real measurements (see `README.md` §2, �
 | M5 | Done — real optimized kernels, modest measured speedup |
 | M6 | Done at 10K–25K; 100K–1M correctly marked infeasible (VRAM/RAM wall) |
 | M7 | Done — README + Streamlit dashboard (`app.py`) |
+| M8 | Done — outside-syllabus optimizations (register blocking, async double-buffered copies, FP16 storage, combined) measured with CPU and V0/V1 in one session; dashboard "Optimization Journey" page. See `docs/M8_ADVANCED_OPTIMIZATIONS.md` |
 
 ## Milestones
 

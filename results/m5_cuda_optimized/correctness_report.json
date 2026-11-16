@@ -1,0 +1,52 @@
+{
+  "10k": {
+    "cpu_vs_naive_cuda": {
+      "max_abs_error": 0.0009446144104003906,
+      "mean_abs_error": 2.2170543670654296e-07,
+      "pearson_r": 0.9999999711425394,
+      "anomaly_agreement": 1.0
+    },
+    "cpu_vs_optimized_cuda": {
+      "max_abs_error": 0.0009446144104003906,
+      "mean_abs_error": 2.2170543670654296e-07,
+      "pearson_r": 0.9999999711425394,
+      "anomaly_agreement": 1.0
+    },
+    "naive_cuda_vs_optimized_cuda": {
+      "max_abs_error": 0.0,
+      "mean_abs_error": 0.0,
+      "pearson_r": 1.0,
+      "anomaly_agreement": 1.0
+    },
+    "naive_vs_optimized_knn": {
+      "index_agreement_fraction": 1.0,
+      "distance_max_abs_error": 0.0
+    },
+    "distance_matrix_naive_vs_optimized_max_abs_error": 0.0
+  },
+  "25k": {
+    "cpu_vs_naive_cuda": {
+      "max_abs_error": 0.0004744529724121094,
+      "mean_abs_error": 1.5867471694946288e-07,
+      "pearson_r": 0.9999999970684829,
+      "anomaly_agreement": 1.0
+    },
+    "cpu_vs_optimized_cuda": {
+      "max_abs_error": 0.0004744529724121094,
+      "mean_abs_error": 1.5867471694946288e-07,
+      "pearson_r": 0.9999999970684829,
+      "anomaly_agreement": 1.0
+    },
+    "naive_cuda_vs_optimized_cuda": {
+      "max_abs_error": 0.0,
+      "mean_abs_error": 0.0,
+      "pearson_r": 0.9999999999999998,
+      "anomaly_agreement": 1.0
+    },
+    "naive_vs_optimized_knn": {
+      "index_agreement_fraction": 1.0,
+      "distance_max_abs_error": 0.0
+    },
+    "distance_matrix_naive_vs_optimized_max_abs_error": 0.0
+  }
+}
